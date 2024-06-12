@@ -1,4 +1,8 @@
-import { authController, readController } from '~/src/api/dataverse/controller'
+import {
+  authController,
+  postController,
+  readController
+} from '~/src/api/dataverse/controller'
 
 const dataverse = {
   plugin: {
@@ -12,8 +16,13 @@ const dataverse = {
         },
         {
           method: 'GET',
-          path: '/dataverse/{entity}',
+          path: '/dataverse-read/{entity}',
           ...readController
+        },
+        {
+          method: 'POST',
+          path: '/dataverse-save/{entity}',
+          ...postController
         }
       ])
     }
