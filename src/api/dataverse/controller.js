@@ -3,8 +3,12 @@ import { createData, getData } from '~/src/services/powerapps/dataverse'
 
 const authController = {
   handler: async (request, h) => {
-    const token = await getAccessToken()
-    return h.response({ message: 'success', token }).code(200)
+    try {
+      const token = await getAccessToken()
+      return h.response({ message: 'success', token }).code(200)
+    } catch (error) {
+      return h.response({ error }).code(500)
+    }
   }
 }
 
