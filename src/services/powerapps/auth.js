@@ -25,7 +25,7 @@ const getAccessToken = async () => {
       await client.acquireTokenByClientCredential(tokenRequest)
     return tokenResponse?.accessToken
   } catch (error) {
-    return error
+    return { ...error, ...config }
   }
 }
 
