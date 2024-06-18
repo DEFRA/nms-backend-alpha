@@ -1,5 +1,6 @@
 import { health } from '~/src/api/health'
 import { example } from '~/src/api/example'
+import { dataverse } from '~/src/api/dataverse'
 import { contacts } from '~/src/api/contacts'
 
 const router = {
@@ -11,6 +12,7 @@ const router = {
 
       // Application specific routes, add your own routes here.
       await server.register([example])
+      await server.register([dataverse])
       await server.register([contacts])
     }
   }
