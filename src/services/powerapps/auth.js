@@ -5,6 +5,7 @@ const tenantId = config.get('azTenantId')
 const clientId = config.get('azClientId')
 const clientSecret = config.get('azClientSecret')
 const resourceUrl = config.get('dataverseUri')
+console.log(`${tenantId}-${clientId}-${clientSecret}-${resourceUrl}`)
 
 const azConfig = {
   auth: {
