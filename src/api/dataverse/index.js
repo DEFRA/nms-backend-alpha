@@ -1,7 +1,8 @@
 import {
   authController,
   postController,
-  readController
+  readController,
+  saveOrganizationNContact
 } from '~/src/api/dataverse/controller'
 
 const dataverse = {
@@ -23,6 +24,11 @@ const dataverse = {
           method: 'POST',
           path: '/dataverse-save/{entity}',
           ...postController
+        },
+        {
+          method: 'POST',
+          path: '/save-organization-contact',
+          ...saveOrganizationNContact
         }
       ])
     }

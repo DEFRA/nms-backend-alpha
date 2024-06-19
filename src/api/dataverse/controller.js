@@ -1,3 +1,5 @@
+import { dataverseEntities } from '~/src/helpers/constants'
+import organizationNContact from '~/src/schema/organizationNContact'
 import { getAccessToken } from '~/src/services/powerapps/auth'
 import { createData, getData } from '~/src/services/powerapps/dataverse'
 
@@ -39,4 +41,55 @@ const postController = {
   }
 }
 
-export { authController, readController, postController }
+const saveOrganizationNContact = {
+  handler: async (request, h) => {
+    const { error, value: payload } = organizationNContact.validate(
+      request.payload,
+      { abortEarly: false }
+    )
+    if (error) {
+      return h.response({ error: error.details[0].message }).code(400)
+    }
+    try {
+      const { organization, contact } = dataverseEntities
+      const organizationPayload = {
+        nm_residentialaddressline1: payload.address1,
+        nm_residentialaddressline2: payload.address2,
+        nm_residentialaddressline3: payload.address3,
+        nm_residentialtownorcity: payload.townRCity,
+        nm_residentialpostcode: payload.postcode,
+        nm_dateofbirth: payload.dateOfBirth,
+        nm_typeofdeveloper: payload.typeOfDeveloper,
+        nm_nationality: payload.nationality
+      }
+
+      const organizationRecord = await createData(
+        organization,
+        organizationPayload
+      )
+      const organizationId = organizationRecord.nm_organisationid
+
+      const contactPayload = {
+        firstname: payload.firstName,
+        lastname: payload.lastName,
+        nm_telephonenumber: payload.phone,
+        nm_email: payload.email,
+        nm_organisation: organizationId
+      }
+
+      const contactRecord = await createData(contact, contactPayload)
+      return h
+        .response({ message: 'Save successfully', data: contactRecord })
+        .code(201)
+    } catch (error) {
+      return h.response({ error: error.message }).code(500)
+    }
+  }
+}
+
+export {
+  authController,
+  readController,
+  postController,
+  saveOrganizationNContact
+}
