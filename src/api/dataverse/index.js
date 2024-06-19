@@ -1,10 +1,10 @@
 import {
   authController,
+  getEntitySchema,
   postController,
   readController,
   saveOrganizationNContact
 } from '~/src/api/dataverse/controller'
-import { getEntityMetadata } from '~/src/services/powerapps/dataverse'
 
 const dataverse = {
   plugin: {
@@ -34,7 +34,7 @@ const dataverse = {
         {
           method: 'GET',
           path: '/entity-schema',
-          ...getEntityMetadata
+          ...getEntitySchema
         }
       ])
     }
