@@ -77,7 +77,8 @@ const saveOrganizationNContact = {
         nm_residentialtownorcity: payload.townRCity,
         nm_residentialpostcode: payload.postcode,
         nm_dateofbirth: payload.dateOfBirth ?? null,
-        nm_typeofdeveloper: payload.typeOfDeveloper ?? null
+        nm_typeofdeveloper: payload.typeOfDeveloper ?? null,
+        nm_organisationname: payload.orgName ?? null
         // nm_nationality: payload.nationality
       }
 

@@ -21,7 +21,8 @@ const organizationNContact = Joi.object({
     .default('')
     .allow('')
     .optional(),
-  nationality: Joi.string().default('').allow('').optional()
+  nationality: Joi.string().default('').allow('').optional(),
+  orgName: Joi.string().optional().default('').allow('')
 })
 
 export default organizationNContact
