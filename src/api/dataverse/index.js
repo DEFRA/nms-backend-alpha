@@ -33,7 +33,7 @@ const dataverse = {
         },
         {
           method: 'GET',
-          path: '/entity-schema',
+          path: '/entity-schema/{entity}',
           ...getEntitySchema
         }
       ])
