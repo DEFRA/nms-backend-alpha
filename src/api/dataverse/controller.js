@@ -1,7 +1,11 @@
 import { dataverseEntities } from '~/src/helpers/constants'
 import organizationNContact from '~/src/schema/organizationNContact'
 import { getAccessToken } from '~/src/services/powerapps/auth'
-import { createData, getData } from '~/src/services/powerapps/dataverse'
+import {
+  createData,
+  getData,
+  getEntityMetadata
+} from '~/src/services/powerapps/dataverse'
 
 const authController = {
   handler: async (request, h) => {
@@ -30,7 +34,7 @@ const getEntitySchema = {
   handler: async (request, h) => {
     try {
       const { entity } = request.params
-      const schema = await getEntitySchema(entity)
+      const schema = await getEntityMetadata(entity)
       return h.response({ message: 'success', data: schema }).code(200)
     } catch (error) {
       return h.response({ error: error.message }).code(500)
