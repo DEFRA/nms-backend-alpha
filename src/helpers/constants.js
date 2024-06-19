@@ -3,6 +3,5 @@ export const mongoCollections = {
 }
 
 export const dataverseEntities = {
-  contact: 'contacts',
-  organization: 'nm_organisations'
+  contact: 'contacts'
 }
