@@ -48,7 +48,9 @@ const saveOrganizationNContact = {
       { abortEarly: false }
     )
     if (error) {
-      return h.response({ error: error.details[0].message }).code(400)
+      return h
+        .response({ error: error.details.map((detail) => detail.message) })
+        .code(400)
     }
     try {
       const { organization, contact } = dataverseEntities

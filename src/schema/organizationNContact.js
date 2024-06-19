@@ -16,12 +16,12 @@ const organizationNContact = Joi.object({
   townRCity: Joi.string().max(100).required(),
   postcode: Joi.string().max(100).required(),
   dateOfBirth: Joi.date().iso().default('').allow('').optional(),
-  typeOfDeveloper: Joi.date().iso().default('').allow('').optional(),
-  nationality: Joi.string()
+  typeOfDeveloper: Joi.string()
     .valid('Company', 'Individual', 'Public body')
     .default('')
     .allow('')
-    .optional()
+    .optional(),
+  nationality: Joi.string().default('').allow('').optional()
 })
 
 export default organizationNContact
