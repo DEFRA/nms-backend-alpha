@@ -71,14 +71,14 @@ const saveOrganizationNContact = {
     try {
       const { organization, contact } = dataverseEntities
       const organizationPayload = {
-        nm_residentialaddressline1: payload.address1,
-        nm_residentialaddressline2: payload.address2,
-        nm_residentialaddressline3: payload.address3,
-        nm_residentialtownorcity: payload.townRCity,
-        nm_residentialpostcode: payload.postcode,
-        nm_dateofbirth: payload.dateOfBirth,
-        nm_typeofdeveloper: payload.typeOfDeveloper,
-        nm_nationality: payload.nationality
+        nm_ResidentialAddressline1: payload.address1,
+        nm_ResidentialAddressline2: payload.address2,
+        nm_ResidentialAddressline3: payload.address3,
+        nm_ResidentialTownorcity: payload.townRCity,
+        nm_ResidentialPostcode: payload.postcode,
+        nm_Dateofbirth: payload.dateOfBirth,
+        nm_Typeofdeveloper: payload.typeOfDeveloper,
+        nm_Nationality: payload.nationality
       }
 
       const organizationRecord = await createData(
@@ -88,11 +88,11 @@ const saveOrganizationNContact = {
       const organizationId = organizationRecord.nm_organisationid
 
       const contactPayload = {
-        firstname: payload.firstName,
-        lastname: payload.lastName,
-        nm_telephonenumber: payload.phone,
-        nm_email: payload.email,
-        nm_organisation: organizationId
+        FirstName: payload.firstName,
+        LastName: payload.lastName,
+        nm_TelephoneNumber: payload.phone,
+        nm_Email: payload.email,
+        nm_Organisation: organizationId
       }
 
       const contactRecord = await createData(contact, contactPayload)
