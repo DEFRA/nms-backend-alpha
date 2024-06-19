@@ -84,7 +84,7 @@ const saveOrganizationNContact = {
         .response({ message: 'Save successfully', data: contactRecord })
         .code(201)
     } catch (error) {
-      return h.response({ error: error.message }).code(500)
+      return h.response({ error }).code(500)
     }
   }
 }
