@@ -87,7 +87,7 @@ const saveOrganizationNContact = {
         lastname: payload.lastName,
         nm_telephonenumber: payload.phone,
         nm_email: payload.email,
-        nm_organisation: organizationPayload
+        nm_Organisation: organizationPayload
       }
 
       const contactRecord = await createData(contact, contactPayload)
