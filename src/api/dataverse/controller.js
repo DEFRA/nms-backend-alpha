@@ -26,6 +26,18 @@ const readController = {
   }
 }
 
+const getEntitySchema = {
+  handler: async (request, h) => {
+    try {
+      const { entity } = request.params
+      const schema = await getEntitySchema(entity)
+      return h.response({ message: 'success', data: schema }).code(200)
+    } catch (error) {
+      return h.response({ error: error.message }).code(500)
+    }
+  }
+}
+
 const postController = {
   handler: async (request, h) => {
     try {
@@ -93,5 +105,6 @@ export {
   authController,
   readController,
   postController,
+  getEntitySchema,
   saveOrganizationNContact
 }

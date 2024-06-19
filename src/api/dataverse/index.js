@@ -29,6 +29,11 @@ const dataverse = {
           method: 'POST',
           path: '/save-organization-contact',
           ...saveOrganizationNContact
+        },
+        {
+          method: 'GET',
+          path: '/entity-schema',
+          ...saveOrganizationNContact
         }
       ])
     }

@@ -64,11 +64,21 @@ const createColumn = async (tableName, columnDefinition) => {
   return response.data
 }
 
+const getEntityMetadata = async (entity) => {
+  const headers = await getHeaders()
+  const response = await axios.post(
+    `${apiBaseUrl}/EntityDefinitions(LogicalName='${entity}')`,
+    { headers }
+  )
+  return response.data
+}
+
 export {
   getData,
   createData,
   updateData,
   deleteData,
   createTable,
-  createColumn
+  createColumn,
+  getEntityMetadata
 }
