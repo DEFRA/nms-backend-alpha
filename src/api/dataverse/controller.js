@@ -1,4 +1,7 @@
-import { dataverseEntities } from '~/src/helpers/constants'
+import {
+  dataverseEntities,
+  typeOfDeveloperValues
+} from '~/src/helpers/constants'
 import organizationNContact from '~/src/schema/organizationNContact'
 import { getAccessToken } from '~/src/services/powerapps/auth'
 import {
@@ -76,10 +79,13 @@ const saveOrganizationNContact = {
         nm_residentialaddressline3: payload.address3,
         nm_residentialtownorcity: payload.townRCity,
         nm_residentialpostcode: payload.postcode,
-        // nm_dateofbirth: payload.dateOfBirth ?? null,
-        // nm_typeofdeveloper: payload.typeOfDeveloper ?? null,
-        nm_organisationname: payload.orgName ?? null
-        // nm_nationality: payload.nationality
+        nm_dateofbirth: payload.dateOfBirth === '' ? null : payload.dateOfBirth,
+        nm_typeofdeveloper:
+          payload.typeOfDeveloper === ''
+            ? null
+            : typeOfDeveloperValues[payload.typeOfDeveloper],
+        nm_organisationname: payload.orgName === '' ? null : payload.orgName,
+        nm_nationality: payload.nationality === '' ? null : payload.nationality
       }
 
       const contactPayload = {
