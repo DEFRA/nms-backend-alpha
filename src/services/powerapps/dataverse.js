@@ -12,7 +12,8 @@ const getHeaders = async () => {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     'OData-MaxVersion': '4.0',
-    'OData-Version': '4.0'
+    'OData-Version': '4.0',
+    Prefer: 'return=representation'
   }
 }
 

@@ -8,7 +8,8 @@ import { getAccessToken } from '~/src/services/powerapps/auth'
 import {
   createData,
   getData,
-  getEntityMetadata
+  getEntityMetadata,
+  updateData
 } from '~/src/services/powerapps/dataverse'
 
 const authController = {
@@ -73,7 +74,7 @@ const saveOrganizationNContact = {
         .code(400)
     }
     try {
-      const { contact } = dataverseEntities
+      const { contact, organization } = dataverseEntities
       const organizationPayload = {
         nm_residentialaddressline1: payload.address1,
         nm_residentialaddressline2: payload.address2,
@@ -85,11 +86,7 @@ const saveOrganizationNContact = {
           payload.typeOfDeveloper === ''
             ? null
             : typeOfDeveloperValues[payload.typeOfDeveloper],
-        nm_organisationname: payload.orgName === '' ? null : payload.orgName,
-        nm_Nationality:
-          payload.nationality === ''
-            ? null
-            : nationalityValues[payload.nationality]
+        nm_organisationname: payload.orgName === '' ? null : payload.orgName
       }
 
       const contactPayload = {
@@ -101,6 +98,15 @@ const saveOrganizationNContact = {
       }
 
       const contactRecord = await createData(contact, contactPayload)
+      if (
+        contactRecord?.contactid &&
+        contactRecord?._nm_organisation_value &&
+        payload.nationality
+      ) {
+        await updateData(organization, contactRecord?._nm_organisation_value, {
+          'nm_Nationality@odata.bind': `/nm_countries(${nationalityValues[payload.nationality]})`
+        })
+      }
       return h
         .response({ message: 'Save successfully', data: contactRecord })
         .code(201)
