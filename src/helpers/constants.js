@@ -3,7 +3,8 @@ export const mongoCollections = {
 }
 
 export const dataverseEntities = {
-  contact: 'contacts'
+  contact: 'contacts',
+  organization: 'nm_organisations'
 }
 
 export const typeOfDeveloperValues = {
