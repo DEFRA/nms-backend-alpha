@@ -1,5 +1,6 @@
 import {
   dataverseEntities,
+  nationalityValues,
   typeOfDeveloperValues
 } from '~/src/helpers/constants'
 import organizationNContact from '~/src/schema/organizationNContact'
@@ -85,7 +86,10 @@ const saveOrganizationNContact = {
             ? null
             : typeOfDeveloperValues[payload.typeOfDeveloper],
         nm_organisationname: payload.orgName === '' ? null : payload.orgName,
-        nm_nationality: payload.nationality === '' ? null : payload.nationality
+        nm_Nationality:
+          payload.nationality === ''
+            ? null
+            : nationalityValues[payload.nationality]
       }
 
       const contactPayload = {

@@ -21,7 +21,11 @@ const organizationNContact = Joi.object({
     .default('')
     .allow('')
     .optional(),
-  nationality: Joi.string().default('').allow('').optional(),
+  nationality: Joi.string()
+    .valid('United Kingdom', 'United States', 'India')
+    .default('')
+    .allow('')
+    .optional(),
   orgName: Joi.string().optional().default('').allow('')
 })
 
