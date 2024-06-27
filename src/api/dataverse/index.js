@@ -3,7 +3,8 @@ import {
   getEntitySchema,
   postController,
   readController,
-  saveOrganizationNContact
+  saveOrganizationNContact,
+  saveDevelopmentSite
 } from '~/src/api/dataverse/controller'
 
 const dataverse = {
@@ -35,6 +36,11 @@ const dataverse = {
           method: 'GET',
           path: '/entity-schema/{entity}',
           ...getEntitySchema
+        },
+        {
+          method: 'POST',
+          path: '/save-development-site',
+          ...saveDevelopmentSite
         }
       ])
     }
