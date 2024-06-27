@@ -97,7 +97,7 @@ const config = convict({
   },
   dataverseUri: {
     doc: 'The power apps dataverse URI',
-    format: '*',
+    format: String,
     default: 'https://defra-nutrientmitigation-dev.crm11.dynamics.com/',
     env: 'DATAVERSE_URI'
   }

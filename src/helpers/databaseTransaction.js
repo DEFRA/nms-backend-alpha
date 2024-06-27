@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { createLogger } from '~/src/helpers/logging/logger'
 
 const logger = createLogger()
@@ -12,6 +13,31 @@ const createDocument = async (db, collectionName, document) => {
   } catch (error) {
     logger.error(`Failed to create document in ${collectionName}: ${error}`)
     throw new Error('Failed to create document')
+  }
+}
+
+const updateDocument = async (db, collectionName, id, document) => {
+  try {
+    const collection = db.collection(collectionName)
+    const { matchedCount } = await collection.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      { $set: document }
+    )
+    if (matchedCount) {
+      return await readDocument(db, collectionName, { _id: new ObjectId(id) })
+    } else {
+      logger.error(
+        `Failed to find the document in ${collectionName} with ${id}`
+      )
+      throw new Error('Failed to find the document')
+    }
+  } catch (error) {
+    logger.error(
+      `Failed to update document in ${collectionName} with ${id}: ${error}`
+    )
+    throw new Error('Failed to update document')
   }
 }
 
@@ -39,4 +65,4 @@ const readDocument = async (db, collectionName, query) => {
   }
 }
 
-export { createDocument, readAllDocuments, readDocument }
+export { createDocument, readAllDocuments, readDocument, updateDocument }

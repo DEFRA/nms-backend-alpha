@@ -1,5 +1,14 @@
+import contactsSchema from '../schema/contacts'
+import organizationsSchema from '../schema/organizations'
+
 export const mongoCollections = {
-  contact: 'Contact'
+  contact: 'Contact',
+  submission: 'Submission'
+}
+
+export const schemaMapping = {
+  contact: contactsSchema,
+  organization: organizationsSchema
 }
 
 export const dataverseEntities = {
