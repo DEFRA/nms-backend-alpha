@@ -1,6 +1,6 @@
 import { URL } from 'node:url'
-import { HttpsProxyAgent } from 'https-proxy-agent'
 
+import { HttpsProxyAgent } from 'https-proxy-agent'
 import { config } from '~/src/config'
 
 const proxyAgent = () => {
