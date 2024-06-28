@@ -44,7 +44,8 @@ const getAccessToken = async () => {
       await client.acquireTokenByClientCredential(tokenRequest)
     return tokenResponse?.accessToken
   } catch (error) {
-    throw new Error('Failed to acquire token')
+    // throw new Error('Failed to acquire token')
+    return error
   }
 }
 

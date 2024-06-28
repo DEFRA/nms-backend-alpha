@@ -2,9 +2,12 @@ import {
   dataverseEntities,
   nationalityValues,
   typeOfDeveloperValues
+  // creditSalesStatusValues,
+  // developerInterestDetails
 } from '~/src/helpers/constants'
 import { proxyAgent } from '~/src/helpers/proxy-agent'
 import organizationNContact from '~/src/schema/organizationNContact'
+import developmentSite from '~/src/schema/developmentSite'
 import { getAccessToken } from '~/src/services/powerapps/auth'
 import {
   createData,
@@ -12,6 +15,7 @@ import {
   getEntityMetadata,
   updateData
 } from '~/src/services/powerapps/dataverse'
+import { config } from '~/src/config/index'
 
 const authController = {
   handler: async (request, h) => {
@@ -33,16 +37,17 @@ const testProxy = {
       })
       if (response.ok) {
         const text = response.text()
-        h.response({ text })
+        h.response({ proxyAgentObj, text })
       } else {
         h.response({
           message: 'Fetch failed',
+          proxyAgentObj,
           status: response.status,
           error: response.statusText
         })
       }
     } catch (error) {
-      h.response({ message: 'error', error })
+      h.response({ message: 'error', proxyAgentObj, error })
     }
   }
 }
@@ -140,11 +145,77 @@ const saveOrganizationNContact = {
   }
 }
 
+const saveDevelopmentSite = {
+  handler: async (request, h) => {
+    // const { error, value: payload } = developmentSite.validate(
+    const { error } = developmentSite.validate(request.payload, {
+      abortEarly: false
+    })
+    if (error) {
+      return h
+        .response({ error: error.details.map((detail) => detail.message) })
+        .code(400)
+    }
+    return h.response(config)
+    // try {
+    //   const { developmentSite } = dataverseEntities
+    //   const developmentSitePayload = {
+    //     // nm_DevelopmentSiteId: payload.address1,
+    //     nm_Catchment: payload.catchment,
+    //     nm_Certificateextensionrequired:
+    //       payload.certificateExtensionRequired === 'Yes' ? 1 : 0,
+    //     nm_CreditSalesStatus:
+    //       payload.creditSalesStatus === ''
+    //         ? null
+    //         : creditSalesStatusValues(payload.creditSalesStatus),
+    //     nm_Customerduediligencecheckneeded:
+    //       payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0,
+    //     nm_DeveloperCompany: payload.developerCompany,
+    //     nm_GridReference: payload.gridReference,
+    //     nm_LPAs: payload.lpas,
+    //     nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt,
+    //     OwnerId: payload.ownerId,
+    //     nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0,
+    //     nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0,
+    //     nm_SiteName: payload.siteName,
+    //     nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0,
+    //     statecode: payload.stateCode,
+    //     nm_Subcatchments: payload.subCatchments,
+    //     nm_Thedeveloperistheapplicant:
+    //       payload.theDeveloperIsTheApplicant === ''
+    //         ? null
+    //         : developerInterestDetails(payload.theDeveloperIsTheApplicant),
+    //     nm_Thedevelopersinterestinthedevelopmentsite:
+    //       payload.theDevelopersInterestInTheDevelopmentSite === ''
+    //         ? null
+    //         : developerInterestDetails(
+    //             payload.theDevelopersInterestInTheDevelopmentSite
+    //           ),
+    //     nm_Haveyouincludedamapoftheproposedredlineb:
+    //       payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 1 : 0
+    //   }
+
+    //   const developmentSiteRecord = await createData(
+    //     developmentSite,
+    //     developmentSitePayload
+    //   )
+
+    //   return h
+    //     .response({ message: 'Save successfully', data: developmentSiteRecord })
+    //     .code(201)
+    // } catch (error) {
+    //   return h.response({ error }).code(500)
+    // }
+    // //
+  }
+}
+
 export {
   authController,
   readController,
   postController,
   getEntitySchema,
   saveOrganizationNContact,
+  saveDevelopmentSite,
   testProxy
 }
