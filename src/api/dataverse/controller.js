@@ -33,14 +33,11 @@ const testProxy = {
   handler: async (request, h) => {
     const proxyAgentObj = proxyAgent()
     try {
-      // const response = await fetch('https://www.google.com', {
-      //   agent: proxyAgentObj.agent
-      // })
       const response = await proxyFetch('https://www.google.com', {
         method: 'GET'
       })
-      if (response.status > 200 && response.status < 300) {
-        const text = response.text()
+      if (response.status >= 200 && response.status < 300) {
+        const text = await response.text()
         return h.response({ proxyAgentObj, text })
       } else {
         return h.response({
