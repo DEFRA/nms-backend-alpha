@@ -37,9 +37,9 @@ const testProxy = {
       })
       if (response.ok) {
         const text = response.text()
-        h.response({ proxyAgentObj, text })
+        return h.response({ proxyAgentObj, text })
       } else {
-        h.response({
+        return h.response({
           message: 'Fetch failed',
           proxyAgentObj,
           status: response.status,
@@ -47,7 +47,7 @@ const testProxy = {
         })
       }
     } catch (error) {
-      h.response({ message: 'error', proxyAgentObj, error })
+      return h.response({ message: 'error', proxyAgentObj, error })
     }
   }
 }
