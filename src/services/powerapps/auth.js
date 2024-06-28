@@ -1,4 +1,5 @@
 import { ConfidentialClientApplication } from '@azure/msal-node'
+import { proxyAgent } from '~/src/helpers/proxy-agent'
 import { config } from '~/src/config'
 
 const tenantId = config.get('azTenantId')
@@ -17,8 +18,15 @@ const azConfig = {
 const client = new ConfidentialClientApplication(azConfig)
 
 const getAccessToken = async () => {
+  const proxyAgentObj = proxyAgent()
   const tokenRequest = {
-    scopes: [`${resourceUrl}.default`]
+    scopes: [`${resourceUrl}.default`],
+    ...(proxyAgentObj && {
+      proxy: {
+        httpProxy: proxyAgentObj.url,
+        httpsProxy: proxyAgentObj.url
+      }
+    })
   }
   try {
     const tokenResponse =
