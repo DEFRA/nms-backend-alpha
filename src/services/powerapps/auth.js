@@ -34,10 +34,9 @@ const getAccessToken = async () => {
   try {
     const tokenResponse =
       await client.acquireTokenByClientCredential(tokenRequest)
-    return tokenResponse?.accessToken
+    return await tokenResponse?.accessToken
   } catch (error) {
-    // throw new Error('Failed to acquire token')
-    return error
+    throw new Error('Failed to acquire token')
   }
 }
 
