@@ -6,27 +6,38 @@ const tenantId = config.get('azTenantId')
 const clientId = config.get('azClientId')
 const clientSecret = config.get('azClientSecret')
 const resourceUrl = config.get('dataverseUri')
+const proxyAgentObj = proxyAgent()
 
 const azConfig = {
   auth: {
     clientId,
     authority: `https://login.microsoftonline.com/${tenantId}`,
     clientSecret
-  }
+  },
+  ...(proxyAgentObj && {
+    system: {
+      networkClient: {
+        sendGetRequestAsync: async (url, options) => {
+          return fetch(url, { ...options, agent: proxyAgentObj.agent })
+        },
+        sendPostRequestAsync: async (url, options) => {
+          const sendingOptions = options || {}
+          sendingOptions.method = 'post'
+          return fetch(url, {
+            ...sendingOptions,
+            agent: proxyAgentObj.agent
+          })
+        }
+      }
+    }
+  })
 }
 
 const client = new ConfidentialClientApplication(azConfig)
 
 const getAccessToken = async () => {
-  const proxyAgentObj = proxyAgent()
   const tokenRequest = {
-    scopes: [`${resourceUrl}.default`],
-    ...(proxyAgentObj && {
-      proxy: {
-        httpProxy: proxyAgentObj.url,
-        httpsProxy: proxyAgentObj.url
-      }
-    })
+    scopes: [`${resourceUrl}.default`]
   }
   try {
     const tokenResponse =
