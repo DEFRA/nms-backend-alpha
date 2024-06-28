@@ -18,12 +18,12 @@ const azConfig = {
     system: {
       networkClient: {
         sendGetRequestAsync: async (url, options) => {
-          return fetch(url, { ...options, agent: proxyAgentObj.agent })
+          return await fetch(url, { ...options, agent: proxyAgentObj.agent })
         },
         sendPostRequestAsync: async (url, options) => {
           const sendingOptions = options || {}
           sendingOptions.method = 'post'
-          return fetch(url, {
+          return await fetch(url, {
             ...sendingOptions,
             agent: proxyAgentObj.agent
           })

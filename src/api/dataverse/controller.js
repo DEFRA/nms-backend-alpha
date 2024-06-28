@@ -5,6 +5,7 @@ import {
   // creditSalesStatusValues,
   // developerInterestDetails
 } from '~/src/helpers/constants'
+import { proxyAgent } from '~/src/helpers/proxy-agent'
 import organizationNContact from '~/src/schema/organizationNContact'
 import developmentSite from '~/src/schema/developmentSite'
 import { getAccessToken } from '~/src/services/powerapps/auth'
@@ -23,6 +24,30 @@ const authController = {
       return h.response({ message: 'success', token }).code(200)
     } catch (error) {
       return h.response({ error }).code(500)
+    }
+  }
+}
+
+const testProxy = {
+  handler: async (request, h) => {
+    const proxyAgentObj = proxyAgent()
+    try {
+      const response = await fetch('https://www.google.com', {
+        agent: proxyAgentObj.agent
+      })
+      if (response.ok) {
+        const text = response.text()
+        h.response({ proxyAgentObj, text })
+      } else {
+        h.response({
+          message: 'Fetch failed',
+          proxyAgentObj,
+          status: response.status,
+          error: response.statusText
+        })
+      }
+    } catch (error) {
+      h.response({ message: 'error', proxyAgentObj, error })
     }
   }
 }
@@ -191,5 +216,6 @@ export {
   postController,
   getEntitySchema,
   saveOrganizationNContact,
-  saveDevelopmentSite
+  saveDevelopmentSite,
+  testProxy
 }

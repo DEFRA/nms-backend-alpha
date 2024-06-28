@@ -4,7 +4,8 @@ import {
   postController,
   readController,
   saveOrganizationNContact,
-  saveDevelopmentSite
+  saveDevelopmentSite,
+  testProxy
 } from '~/src/api/dataverse/controller'
 
 const dataverse = {
@@ -41,6 +42,11 @@ const dataverse = {
           method: 'POST',
           path: '/save-development-site',
           ...saveDevelopmentSite
+        },
+        {
+          method: 'GET',
+          path: '/test-proxy',
+          ...testProxy
         }
       ])
     }
