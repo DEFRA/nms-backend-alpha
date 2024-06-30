@@ -1,6 +1,6 @@
 import { ConfidentialClientApplication } from '@azure/msal-node'
 import { config } from '~/src/config'
-import { proxyFetch } from '~/src/helpers/proxy-fetch'
+import { sendGetRequestAsync, sendPostRequestAsync } from './authProxyClient'
 
 const tenantId = config.get('azTenantId')
 const clientId = config.get('azClientId')
@@ -14,14 +14,7 @@ const azConfig = {
     clientSecret
   },
   system: {
-    networkClient: {
-      sendGetRequestAsync: async (url, options) => {
-        return proxyFetch(url, options)
-      },
-      sendPostRequestAsync: async (url, options) => {
-        return proxyFetch(url, { ...options, method: 'POST' })
-      }
-    }
+    networkClient: { sendGetRequestAsync, sendPostRequestAsync }
   }
 }
 
@@ -34,7 +27,7 @@ const getAccessToken = async () => {
   try {
     const tokenResponse =
       await client.acquireTokenByClientCredential(tokenRequest)
-    return await tokenResponse?.accessToken
+    return tokenResponse?.accessToken
   } catch (error) {
     throw new Error('Failed to acquire token')
   }
