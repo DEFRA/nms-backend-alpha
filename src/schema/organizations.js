@@ -31,7 +31,7 @@ const organizationsSchema = Joi.object({
     .optional(),
   entity: Joi.string()
     .label('Entity Name')
-    .valid('contact', 'organization')
+    .valid('contact', 'organization', 'upload')
     .required(),
   status: Joi.string()
     .label('Status')
