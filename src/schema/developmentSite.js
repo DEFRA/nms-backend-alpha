@@ -42,12 +42,30 @@ const developmentSite = Joi.object({
     .default('')
     .allow('')
     .required(),
-  wasteWaterConnectionType: Joi.string().max(50).required(),
+  wasteWaterConnectionType: Joi.string()
+    .valid(
+      'Package treatment plant',
+      'Septic tank',
+      'Wastewater treatment work'
+    )
+    .default('')
+    .allow('')
+    .required(),
   catchment: Joi.string().max(50).required(),
   subCatchment: Joi.string().max(50).required(),
   wasteWaterTreatmentWorksConnection: Joi.string().max(50).required(),
   round: Joi.string().max(50).required(),
-  planningUseClassOfThisDevelopment: Joi.string().max(50).required(),
+  planningUseClassOfThisDevelopment: Joi.string()
+    .valid(
+      'Use Class C2 – Residential Institutions',
+      'Use Class C2A – Secure residential institutions',
+      'Use Class C3 – Dwellinghouses',
+      ',Use Class C4 – HMOs',
+      'Other'
+    )
+    .default('')
+    .allow('')
+    .required(),
   numberOfUnitsToBeBuilt: Joi.string().max(50).required(),
   smeDeveloper: Joi.string()
     .valid('Yes', 'No')

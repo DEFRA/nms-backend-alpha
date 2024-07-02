@@ -3,7 +3,9 @@ import {
   nationalityValues,
   typeOfDeveloperValues,
   creditSalesStatusValues,
-  developerInterestDetails
+  developerInterestDetails,
+  wwtwValues,
+  planningUseClassValues
 } from '~/src/helpers/constants'
 import { proxyAgent } from '~/src/helpers/proxy-agent'
 import organizationNContact from '~/src/schema/organizationNContact'
@@ -169,8 +171,8 @@ const saveDevelopmentSite = {
           payload.creditSalesStatus === ''
             ? null
             : creditSalesStatusValues(payload.creditSalesStatus), // value - correct
-        nm_DeveloperCompany: payload.developerCompany, // reference
-        nm_DeveloperEmployee: payload.developerEmployee,
+        'nm_DeveloperCompany@odata.bind': `/nm_organisations(${payload.developerCompany})`,
+        'nm_DeveloperEmployee@odata.bind': `/contacts(${payload.developerEmployee})`,
         nm_Thedevelopersinterestinthedevelopmentsite:
           payload.theDevelopersInterestInTheDevelopmentSite === ''
             ? null
@@ -181,22 +183,28 @@ const saveDevelopmentSite = {
           payload.theDeveloperIsTheApplicant === ''
             ? null
             : developerInterestDetails(payload.theDeveloperIsTheApplicant), // value 1 correct
-        nm_WasteWaterConnectionType: payload.wasteWaterConnectionType,
-        nm_Catchment: payload.catchment, // reference
-        nm_Subcatchment: payload.subCatchment, // reference
-        nm_WasteWaterTreatmentWorksConnection:
-          payload.wasteWaterTreatmentWorksConnection,
-        nm_Round: payload.rround,
+        nm_WasteWaterConnectionType:
+          payload.wasteWaterConnectionType === ''
+            ? null
+            : wwtwValues(payload.wasteWaterConnectionType),
+        'nm_Catchment@odata.bind': `/nm_Catchments(${payload.catchment})`,
+        'nm_Subcatchment@odata.bind': `/nm_Subcatchments(${payload.subCatchment})`,
+        'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
+        'nm_Round@odata.bind': `/nm_RecordRounds(${payload.round})`,
         nm_Planninguseclassofthisdevelopment:
-          payload.planningUseClassOfThisDevelopment,
+          payload.planningUseClassOfThisDevelopment === ''
+            ? null
+            : planningUseClassValues(payload.planningUseClassOfThisDevelopment),
         nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt, // number correct
         nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
-        nm_LPAs: payload.lpas, // reference
+        'nm_LPAs@odata.bind': `/nm_lpas(${payload.lpas})`,
         nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0, // true
         nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0, // false
         nm_GridReference: payload.gridReference, // value correct
         nm_Haveyouincludedamapoftheproposedredlineb:
-          payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 930750000 : 930750001, // value 930750000 Incorrect
+          payload.haveYouIncludedTheProposedRedLineB === 'Yes'
+            ? 930750000
+            : 930750001, // value 930750000 Incorrect
         nm_EnquiryDateRecieved: payload.enquiryDateRecieved,
         nm_Applicationreceivedtime: payload.applicationreceivedtime,
         nm_Customerduediligencecheckneeded:

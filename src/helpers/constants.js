@@ -52,3 +52,17 @@ export const developerInterestDetails = {
   'NA - No historical data': 3,
   Other: 4
 }
+
+export const wwtwValues = {
+  'Package treatment plant': 930750001,
+  'Septic tank': 930750002,
+  'NA - No hisWastewater treatment worktorical data': 930750000
+}
+
+export const planningUseClassValues = {
+  'Use Class C2 – Residential Institutions': 930750000,
+  'Use Class C2A – Secure residential institutions': 930750001,
+  'Use Class C3 – Dwellinghouses': 930750002,
+  'Use Class C4 – HMOs': 930750003,
+  Other: 930750004
+}
