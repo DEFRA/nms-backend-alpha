@@ -184,9 +184,11 @@ const saveDevelopmentSite = {
         nm_WasteWaterConnectionType: payload.wasteWaterConnectionType,
         nm_Catchment: payload.catchment, // reference
         nm_Subcatchment: payload.subCatchment, // reference
-        nm_WasteWaterTreatmentWorksConnection: payload.wasteWaterTreatmentWorksConnection,
+        nm_WasteWaterTreatmentWorksConnection:
+          payload.wasteWaterTreatmentWorksConnection,
         nm_Round: payload.rround,
-        nm_Planninguseclassofthisdevelopment: payload.planningUseClassOfThisDevelopment,
+        nm_Planninguseclassofthisdevelopment:
+          payload.planningUseClassOfThisDevelopment,
         nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt, // number correct
         nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
         nm_LPAs: payload.lpas, // reference
@@ -194,7 +196,7 @@ const saveDevelopmentSite = {
         nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0, // false
         nm_GridReference: payload.gridReference, // value correct
         nm_Haveyouincludedamapoftheproposedredlineb:
-          payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 1 : 0, // value 930750000 Incorrect
+          payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 930750000 : 930750001, // value 930750000 Incorrect
         nm_EnquiryDateRecieved: payload.enquiryDateRecieved,
         nm_Applicationreceivedtime: payload.applicationreceivedtime,
         nm_Customerduediligencecheckneeded:
