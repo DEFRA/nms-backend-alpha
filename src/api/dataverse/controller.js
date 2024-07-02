@@ -221,7 +221,8 @@ const saveDevelopmentSite = {
         .response({ message: 'Save successfully', data: developmentSiteRecord })
         .code(201)
     } catch (error) {
-      return h.response({ error }).code(500)
+      return error
+      // return h.response({ error }).code(500)
     }
   }
 }
