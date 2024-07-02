@@ -44,7 +44,7 @@ const developmentSite = Joi.object({
     .required(),
   wasteWaterConnectionType: Joi.string().max(50).required(),
   catchment: Joi.string().max(50).required(),
-  subCatchments: Joi.string().max(50).required(),
+  subCatchment: Joi.string().max(50).required(),
   wasteWaterTreatmentWorksConnection: Joi.string().max(50).required(),
   round: Joi.string().max(50).required(),
   planningUseClassOfThisDevelopment: Joi.string().max(50).required(),
