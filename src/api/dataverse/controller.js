@@ -164,39 +164,42 @@ const saveDevelopmentSite = {
     try {
       const { developmentSite } = dataverseEntities
       const developmentSitePayload = {
-        // nm_DevelopmentSiteId: payload.address1,
-        nm_Catchment: payload.catchment,
-        nm_Certificateextensionrequired:
-          payload.certificateExtensionRequired === 'Yes' ? 1 : 0,
+        nm_SiteName: payload.siteName,
         nm_CreditSalesStatus:
           payload.creditSalesStatus === ''
             ? null
-            : creditSalesStatusValues(payload.creditSalesStatus),
-        nm_Customerduediligencecheckneeded:
-          payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0,
-        nm_DeveloperCompany: payload.developerCompany,
-        nm_GridReference: payload.gridReference,
-        nm_LPAs: payload.lpas,
-        nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt,
-        OwnerId: payload.ownerId,
-        nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0,
-        nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0,
-        nm_SiteName: payload.siteName,
-        nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0,
-        statecode: payload.stateCode,
-        nm_Subcatchments: payload.subCatchments,
-        nm_Thedeveloperistheapplicant:
-          payload.theDeveloperIsTheApplicant === ''
-            ? null
-            : developerInterestDetails(payload.theDeveloperIsTheApplicant),
+            : creditSalesStatusValues(payload.creditSalesStatus), // value - correct
+        nm_DeveloperCompany: payload.developerCompany, // reference
+        nm_DeveloperEmployee: payload.developerEmployee,
         nm_Thedevelopersinterestinthedevelopmentsite:
           payload.theDevelopersInterestInTheDevelopmentSite === ''
             ? null
             : developerInterestDetails(
                 payload.theDevelopersInterestInTheDevelopmentSite
-              ),
+              ), // value 1 correct
+        nm_Thedeveloperistheapplicant:
+          payload.theDeveloperIsTheApplicant === ''
+            ? null
+            : developerInterestDetails(payload.theDeveloperIsTheApplicant), // value 1 correct
+        nm_WasteWaterConnectionType: payload.wasteWaterConnectionType,
+        nm_Catchment: payload.catchment, // reference
+        nm_Subcatchment: payload.subCatchment, // reference
+        nm_WasteWaterTreatmentWorksConnection: payload.wasteWaterTreatmentWorksConnection,
+        nm_Round: payload.rround,
+        nm_Planninguseclassofthisdevelopment: payload.planningUseClassOfThisDevelopment,
+        nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt, // number correct
+        nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
+        nm_LPAs: payload.lpas, // reference
+        nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0, // true
+        nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0, // false
+        nm_GridReference: payload.gridReference, // value correct
         nm_Haveyouincludedamapoftheproposedredlineb:
-          payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 1 : 0
+          payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 1 : 0, // value 930750000 Incorrect
+        nm_EnquiryDateRecieved: payload.enquiryDateRecieved,
+        nm_Applicationreceivedtime: payload.applicationreceivedtime,
+        nm_Customerduediligencecheckneeded:
+          payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0, // false
+        nm_URN: payload.urn
       }
 
       const developmentSiteRecord = await createData(
