@@ -19,7 +19,9 @@ import {
 } from '~/src/services/powerapps/dataverse'
 // import { config } from '~/src/config/index'
 import { proxyFetch } from '~/src/helpers/proxy-fetch'
+import { createLogger } from '~/src/helpers/logging/logger'
 
+const logger = createLogger()
 const authController = {
   handler: async (request, h) => {
     try {
@@ -187,8 +189,8 @@ const saveDevelopmentSite = {
           payload.wasteWaterConnectionType === ''
             ? null
             : wwtwValues(payload.wasteWaterConnectionType),
-        'nm_Catchment@odata.bind': `/nm_Catchments(${payload.catchment})`,
-        'nm_Subcatchment@odata.bind': `/nm_Subcatchments(${payload.subCatchment})`,
+        'nm_Catchment@odata.bind': `/nm_catchments(${payload.catchment})`,
+        'nm_Subcatchment@odata.bind': `/nm_subcatchments(${payload.subCatchment})`,
         'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
         'nm_Round@odata.bind': `/nm_RecordRounds(${payload.round})`,
         nm_Planninguseclassofthisdevelopment:
@@ -211,7 +213,7 @@ const saveDevelopmentSite = {
           payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0, // false
         nm_URN: payload.urn
       }
-
+      logger.info('developmentSitePayload >> ' + developmentSitePayload)
       const developmentSiteRecord = await createData(
         developmentSite,
         developmentSitePayload
