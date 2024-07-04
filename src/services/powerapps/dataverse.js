@@ -133,7 +133,7 @@ const getOptionSetDefinition = async (entity) => {
   try {
     const headers = await getHeaders()
     const response = await fetchProxyWrapper(
-      `${apiBaseUrl}/GlobalOptionSetDefinitionsName='${entity}')`,
+      `${apiBaseUrl}/GlobalOptionSetDefinitions(Name='${entity}')`,
       {
         headers
       }
