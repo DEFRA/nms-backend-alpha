@@ -1,9 +1,11 @@
 import {
   dataverseEntities,
   nationalityValues,
-  typeOfDeveloperValues
-  // creditSalesStatusValues,
-  // developerInterestDetails
+  typeOfDeveloperValues,
+  creditSalesStatusValues,
+  developerInterestDetails,
+  wwtwValues,
+  planningUseClassValues
 } from '~/src/helpers/constants'
 import { proxyAgent } from '~/src/helpers/proxy-agent'
 import organizationNContact from '~/src/schema/organizationNContact'
@@ -16,7 +18,7 @@ import {
   getOptionSetDefinition,
   updateData
 } from '~/src/services/powerapps/dataverse'
-import { config } from '~/src/config/index'
+// import { config } from '~/src/config/index'
 import { proxyFetch } from '~/src/helpers/proxy-fetch'
 import { createLogger } from '~/src/helpers/logging/logger'
 import { processOptions } from './helpers/process-options'
@@ -153,66 +155,80 @@ const saveOrganizationNContact = {
 
 const saveDevelopmentSite = {
   handler: async (request, h) => {
-    // const { error, value: payload } = developmentSite.validate(
-    const { error } = developmentSite.validate(request.payload, {
-      abortEarly: false
-    })
+    const { error, value: payload } = developmentSite.validate(
+      request.payload,
+      {
+        // const { error } = developmentSite.validate(request.payload, {
+        abortEarly: false
+      }
+    )
     if (error) {
       return h
         .response({ error: error.details.map((detail) => detail.message) })
         .code(400)
     }
-    return h.response(config)
-    // try {
-    //   const { developmentSite } = dataverseEntities
-    //   const developmentSitePayload = {
-    //     // nm_DevelopmentSiteId: payload.address1,
-    //     nm_Catchment: payload.catchment,
-    //     nm_Certificateextensionrequired:
-    //       payload.certificateExtensionRequired === 'Yes' ? 1 : 0,
-    //     nm_CreditSalesStatus:
-    //       payload.creditSalesStatus === ''
-    //         ? null
-    //         : creditSalesStatusValues(payload.creditSalesStatus),
-    //     nm_Customerduediligencecheckneeded:
-    //       payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0,
-    //     nm_DeveloperCompany: payload.developerCompany,
-    //     nm_GridReference: payload.gridReference,
-    //     nm_LPAs: payload.lpas,
-    //     nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt,
-    //     OwnerId: payload.ownerId,
-    //     nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0,
-    //     nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0,
-    //     nm_SiteName: payload.siteName,
-    //     nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0,
-    //     statecode: payload.stateCode,
-    //     nm_Subcatchments: payload.subCatchments,
-    //     nm_Thedeveloperistheapplicant:
-    //       payload.theDeveloperIsTheApplicant === ''
-    //         ? null
-    //         : developerInterestDetails(payload.theDeveloperIsTheApplicant),
-    //     nm_Thedevelopersinterestinthedevelopmentsite:
-    //       payload.theDevelopersInterestInTheDevelopmentSite === ''
-    //         ? null
-    //         : developerInterestDetails(
-    //             payload.theDevelopersInterestInTheDevelopmentSite
-    //           ),
-    //     nm_Haveyouincludedamapoftheproposedredlineb:
-    //       payload.haveYouIncludedTheProposedRedLineB === 'Yes' ? 1 : 0
-    //   }
+    // return h.response(config)
+    try {
+      const { developmentSite } = dataverseEntities
+      const developmentSitePayload = {
+        nm_SiteName: payload.siteName,
+        nm_CreditSalesStatus:
+          payload.creditSalesStatus === ''
+            ? null
+            : creditSalesStatusValues(payload.creditSalesStatus), // value - correct
+        'nm_DeveloperCompany@odata.bind': `/nm_organisations(${payload.developerCompany})`,
+        'nm_DeveloperEmployee@odata.bind': `/contacts(${payload.developerEmployee})`,
+        nm_Thedevelopersinterestinthedevelopmentsite:
+          payload.theDevelopersInterestInTheDevelopmentSite === ''
+            ? null
+            : developerInterestDetails(
+                payload.theDevelopersInterestInTheDevelopmentSite
+              ), // value 1 correct
+        nm_Thedeveloperistheapplicant:
+          payload.theDeveloperIsTheApplicant === ''
+            ? null
+            : developerInterestDetails(payload.theDeveloperIsTheApplicant), // value 1 correct
+        nm_WasteWaterConnectionType:
+          payload.wasteWaterConnectionType === ''
+            ? null
+            : wwtwValues(payload.wasteWaterConnectionType),
+        'nm_Catchment@odata.bind': `/nm_catchments(${payload.catchment})`,
+        'nm_Subcatchment@odata.bind': `/nm_subcatchments(${payload.subCatchment})`,
+        'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
+        'nm_Round@odata.bind': `/nm_RecordRounds(${payload.round})`,
+        nm_Planninguseclassofthisdevelopment:
+          payload.planningUseClassOfThisDevelopment === ''
+            ? null
+            : planningUseClassValues(payload.planningUseClassOfThisDevelopment),
+        nm_NumberofUnitstoBeBuilt: payload.numberOfUnitsToBeBuilt, // number correct
+        nm_SMEDeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
+        'nm_LPAs@odata.bind': `/nm_lpas(${payload.lpas})`,
+        nm_PlanningPermission: payload.planningPermission === 'Yes' ? 1 : 0, // true
+        nm_PhasedDevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0, // false
+        nm_GridReference: payload.gridReference, // value correct
+        nm_Haveyouincludedamapoftheproposedredlineb:
+          payload.haveYouIncludedTheProposedRedLineB === 'Yes'
+            ? 930750000
+            : 930750001, // value 930750000 Incorrect
+        nm_EnquiryDateRecieved: payload.enquiryDateRecieved,
+        nm_Applicationreceivedtime: payload.applicationreceivedtime,
+        nm_Customerduediligencecheckneeded:
+          payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0, // false
+        nm_URN: payload.urn
+      }
+      logger.info('developmentSitePayload >> ' + developmentSitePayload)
+      const developmentSiteRecord = await createData(
+        developmentSite,
+        developmentSitePayload
+      )
 
-    //   const developmentSiteRecord = await createData(
-    //     developmentSite,
-    //     developmentSitePayload
-    //   )
-
-    //   return h
-    //     .response({ message: 'Save successfully', data: developmentSiteRecord })
-    //     .code(201)
-    // } catch (error) {
-    //   return h.response({ error }).code(500)
-    // }
-    // //
+      return h
+        .response({ message: 'Save successfully', data: developmentSiteRecord })
+        .code(201)
+    } catch (error) {
+      return error
+      // return h.response({ error }).code(500)
+    }
   }
 }
 
