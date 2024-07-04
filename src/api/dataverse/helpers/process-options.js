@@ -9,8 +9,8 @@ const processOptions = async (optionsData, valuePath, labelPath) => {
     const key = await nestedPropertyValue(option, valuePath)
     if (key) {
       const optionSet = {
-        value: nestedPropertyValue(option, valuePath),
-        text: nestedPropertyValue(option, labelPath) ?? 'No Label'
+        value: key,
+        text: (await nestedPropertyValue(option, labelPath)) ?? 'No Label'
       }
       optionsSet.push(optionSet)
     }
