@@ -5,7 +5,9 @@ import {
   readController,
   saveOrganizationNContact,
   saveDevelopmentSite,
-  testProxy
+  testProxy,
+  readOptionsController,
+  readEntityAsOptionsController
 } from '~/src/api/dataverse/controller'
 
 const dataverse = {
@@ -47,6 +49,16 @@ const dataverse = {
           method: 'GET',
           path: '/test-proxy',
           ...testProxy
+        },
+        {
+          method: 'GET',
+          path: '/options-definition/{entity}',
+          ...readOptionsController
+        },
+        {
+          method: 'GET',
+          path: '/entity-options/{entity}',
+          ...readEntityAsOptionsController
         }
       ])
     }

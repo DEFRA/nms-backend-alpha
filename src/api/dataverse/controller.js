@@ -13,10 +13,15 @@ import {
   createData,
   getData,
   getEntityMetadata,
+  getOptionSetDefinition,
   updateData
 } from '~/src/services/powerapps/dataverse'
 import { config } from '~/src/config/index'
 import { proxyFetch } from '~/src/helpers/proxy-fetch'
+import { createLogger } from '~/src/helpers/logging/logger'
+import { processOptions } from './helpers/process-options'
+
+const logger = createLogger()
 
 const authController = {
   handler: async (request, h) => {
@@ -211,6 +216,42 @@ const saveDevelopmentSite = {
   }
 }
 
+const readOptionsController = {
+  handler: async (request, h) => {
+    try {
+      const { entity } = request.params
+      const options = await getOptionSetDefinition(entity)
+      const optionsSet = await processOptions(
+        options?.Options ?? null,
+        'Value',
+        'Label.UserLUserLocalizedLabel.Label'
+      )
+      return h.response({ message: 'success', data: optionsSet }).code(200)
+    } catch (error) {
+      logger.error(error)
+      return h.response({ error: error.message }).code(500)
+    }
+  }
+}
+
+const readEntityAsOptionsController = {
+  handler: async (request, h) => {
+    try {
+      const { entity } = request.params
+      const options = await getData(entity)
+      const optionsSet = await processOptions(
+        options?.value ?? null,
+        'nm_countryid',
+        'nm_name'
+      )
+      return h.response({ message: 'success', data: optionsSet }).code(200)
+    } catch (error) {
+      logger.error(error)
+      return h.response({ error: error.message }).code(500)
+    }
+  }
+}
+
 export {
   authController,
   readController,
@@ -218,5 +259,7 @@ export {
   getEntitySchema,
   saveOrganizationNContact,
   saveDevelopmentSite,
-  testProxy
+  testProxy,
+  readOptionsController,
+  readEntityAsOptionsController
 }

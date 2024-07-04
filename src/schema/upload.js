@@ -7,10 +7,7 @@ const fileSchema = Joi.object({
 
 const uploadSchema = Joi.object({
   file: fileSchema.required(),
-  entity: Joi.string()
-    .label('Entity Name')
-    .valid('contact', 'organization', 'upload')
-    .required(),
+  entity: Joi.string().label('Entity Name').valid('upload').required(),
   status: Joi.string()
     .label('Status')
     .valid('complete', 'incomplete')
