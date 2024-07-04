@@ -4,7 +4,7 @@ const processOptions = async (optionsData, valuePath, labelPath) => {
   if (!optionsData) {
     return [{ value: '', label: '--No records found--' }]
   }
-  const optionsSet = [{ value: '', label: '--Select--' }]
+  const optionsSet = []
   optionsData.forEach(async (option) => {
     const key = await nestedPropertyValue(option, valuePath)
     if (key) {
