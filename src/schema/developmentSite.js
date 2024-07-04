@@ -53,7 +53,7 @@ const developmentSite = Joi.object({
     .required(),
   catchment: Joi.string().max(50).required(),
   subCatchment: Joi.string().max(50).required(),
-  wasteWaterTreatmentWorksConnection: Joi.string().max(50).required(),
+  // wasteWaterTreatmentWorksConnection: Joi.string().max(50).required(),
   round: Joi.string().max(50).required(),
   planningUseClassOfThisDevelopment: Joi.string()
     .valid(
@@ -66,7 +66,7 @@ const developmentSite = Joi.object({
     .default('')
     .allow('')
     .required(),
-  numberOfUnitsToBeBuilt: Joi.string().max(50).required(),
+  numberOfUnitsToBeBuilt: Joi.string().max(14).required(),
   smeDeveloper: Joi.string()
     .valid('Yes', 'No')
     .default('')
@@ -96,7 +96,8 @@ const developmentSite = Joi.object({
     .default('')
     .allow('')
     .required(),
-  urn: Joi.string().max(14).required()
+  urn: Joi.string().max(14).required(),
+  folderPath: Joi.string.max(50).required
 })
 
 export default developmentSite
