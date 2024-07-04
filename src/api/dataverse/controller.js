@@ -67,7 +67,7 @@ const readController = {
       const accounts = await getData(entity)
       return h.response({ message: 'success', data: accounts }).code(200)
     } catch (error) {
-      return h.response({ error: error.message }).code(500)
+      return error // h.response({ error: error.message }).code(500)
     }
   }
 }
