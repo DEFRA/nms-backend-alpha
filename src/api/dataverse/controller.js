@@ -18,7 +18,7 @@ import {
   getOptionSetDefinition,
   updateData
 } from '~/src/services/powerapps/dataverse'
-import { config } from '~/src/config/index'
+// import { config } from '~/src/config/index'
 import { proxyFetch } from '~/src/helpers/proxy-fetch'
 import { createLogger } from '~/src/helpers/logging/logger'
 import { processOptions } from './helpers/process-options'
@@ -67,7 +67,7 @@ const readController = {
       const accounts = await getData(entity)
       return h.response({ message: 'success', data: accounts }).code(200)
     } catch (error) {
-      return { error, config } // h.response({ error: error.message }).code(500)
+      h.response({ error: error.message }).code(500)
     }
   }
 }
@@ -240,7 +240,7 @@ const readOptionsController = {
       const optionsSet = await processOptions(
         options?.Options ?? null,
         'Value',
-        'Label.UserLUserLocalizedLabel.Label'
+        'Label.UserLocalizedLabel.Label'
       )
       return h.response({ message: 'success', data: optionsSet }).code(200)
     } catch (error) {
