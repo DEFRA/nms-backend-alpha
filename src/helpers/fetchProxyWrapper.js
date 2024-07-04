@@ -17,8 +17,8 @@ const handleResponse = async (response) => {
     }
   } else {
     const errorMessage = `Request failed with status: ${response.status}`
-    logger.error(response)
-    logger.error(errorMessage)
+    logger.info(response)
+    logger.info(errorMessage)
     throw new Error(errorMessage)
   }
 }
@@ -46,7 +46,7 @@ const fetchProxyWrapper = async (
       )
       return await handleResponse(response)
     } catch (error) {
-      logger.error(error)
+      logger.info(error)
       logger.info(`Attempt ${attempt + 1} failed: ${error.message}`)
       if (attempt < retries - 1) {
         attempt++
