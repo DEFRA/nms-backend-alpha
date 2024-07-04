@@ -129,6 +129,22 @@ const getEntityMetadata = async (entity) => {
   }
 }
 
+const getOptionSetDefinition = async (entity) => {
+  try {
+    const headers = await getHeaders()
+    const response = await fetchProxyWrapper(
+      `${apiBaseUrl}/GlobalOptionSetDefinitionsName='${entity}')`,
+      {
+        headers
+      }
+    )
+    return response.body
+  } catch (error) {
+    logger.error(`Get Option Set Definition failed: ${error.message}`)
+    throw error
+  }
+}
+
 export {
   getData,
   createData,
@@ -136,5 +152,6 @@ export {
   deleteData,
   createTable,
   createColumn,
-  getEntityMetadata
+  getEntityMetadata,
+  getOptionSetDefinition
 }
