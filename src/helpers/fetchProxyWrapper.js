@@ -42,7 +42,7 @@ const fetchProxyWrapper = async (
             'Content-Type': 'application/json'
           }
         },
-        true
+        skipProxy
       )
       return await handleResponse(response)
     } catch (error) {
