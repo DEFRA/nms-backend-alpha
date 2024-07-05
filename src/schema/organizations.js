@@ -29,10 +29,7 @@ const organizationsSchema = Joi.object({
     .default('')
     .allow('')
     .optional(),
-  entity: Joi.string()
-    .label('Entity Name')
-    .valid('contact', 'organization', 'upload')
-    .required(),
+  entity: Joi.string().label('Entity Name').valid('organization').required(),
   status: Joi.string()
     .label('Status')
     .valid('complete', 'incomplete')
