@@ -215,8 +215,8 @@ const saveDevelopmentSite = {
         nm_customerduediligencecheckneeded:
           payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0, // false
         nm_urn: payload.urn,
-        nm_folderpath:
-          `/nm_catchments(${payload.catchment})` + '/' + payload.urn
+        nm_folderpath: payload.folderPath
+        // `/nm_catchments(${payload.catchment})` + '/' + payload.urn
       }
       logger.info('developmentSitePayload >> ' + developmentSitePayload)
       const developmentSiteRecord = await createData(
