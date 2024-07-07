@@ -1,3 +1,4 @@
+import { buildErrorDetails } from '~/src/helpers/build-error-details'
 import { mongoCollections, schemaMapping } from '~/src/helpers/constants'
 import { createDocument } from '~/src/helpers/databaseTransaction'
 
@@ -5,9 +6,12 @@ const createController = {
   handler: async (request, h) => {
     const { entity, ...payload } = request.payload
     try {
-      const { error } = schemaMapping[entity].validate(request.payload)
-      if (error) {
-        return h.response({ error: error.details[0].message }).code(400)
+      const validationResult = schemaMapping[entity].validate(request.payload, {
+        abortEarly: false
+      })
+      if (validationResult?.error) {
+        const errorDetails = buildErrorDetails(validationResult?.error?.details)
+        return h.response({ error: errorDetails }).code(400)
       }
       const collection = mongoCollections[request.params?.collection]
       const document = await createDocument(request.db, collection, payload)
