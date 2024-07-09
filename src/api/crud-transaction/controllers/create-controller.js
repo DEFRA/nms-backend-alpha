@@ -11,12 +11,16 @@ const createController = {
       })
       if (validationResult?.error) {
         const errorDetails = buildErrorDetails(validationResult?.error?.details)
+        request.logger.info(
+          `Create document validation error: ${JSON.stringify(errorDetails)}`
+        )
         return h.response({ error: errorDetails }).code(400)
       }
       const collection = mongoCollections[request.params?.collection]
       const document = await createDocument(request.db, collection, payload)
       return h.response({ message: 'success', document }).code(201)
     } catch (error) {
+      request.logger.info(`Create document error: ${error}`)
       return h.response({ error: error.message }).code(500)
     }
   }
