@@ -15,7 +15,7 @@ export const schemaMapping = {
 export const dataverseEntities = {
   contact: 'contacts',
   organization: 'nm_organisations',
-  developmentSite: 'nm_developmentsites'
+  developmentSite: '  '
 }
 
 export const typeOfDeveloperValues = {

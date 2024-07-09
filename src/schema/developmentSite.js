@@ -97,7 +97,7 @@ const developmentSite = Joi.object({
     .allow('')
     .required(),
   urn: Joi.string().max(14).required(),
-  folderPath: Joi.string().max(50).required
+  folderPath: Joi.string().max(50).required()
 })
 
 export default developmentSite
