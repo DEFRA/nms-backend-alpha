@@ -7,12 +7,9 @@ const updateController = {
     const { entity, ...payload } = request.payload
     const { id, collection } = request.params
     try {
-      const validationResult = schemaMapping[entity](entity).validate(
-        request.payload,
-        {
-          abortEarly: false
-        }
-      )
+      const validationResult = schemaMapping[entity].validate(request.payload, {
+        abortEarly: false
+      })
       if (validationResult?.error) {
         const errorDetails = buildErrorDetails(validationResult?.error?.details)
         request.logger.info(

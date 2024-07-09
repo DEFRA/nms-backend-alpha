@@ -1,3 +1,4 @@
+import contactsSchema from '../schema/contacts'
 import organizationsSchema from '../schema/organizations'
 import uploadSchema from '../schema/upload'
 
@@ -7,7 +8,7 @@ export const mongoCollections = {
 }
 
 export const schemaMapping = {
-  contact: organizationsSchema,
+  contact: contactsSchema,
   organization: organizationsSchema,
   upload: uploadSchema
 }

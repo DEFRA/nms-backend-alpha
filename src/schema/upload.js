@@ -5,15 +5,13 @@ const fileSchema = Joi.object({
   fileUrl: Joi.string().label('File URl').required()
 })
 
-const uploadSchema = () => {
-  return Joi.object({
-    file: fileSchema.required(),
-    entity: Joi.string().label('Entity Name').valid('upload').required(),
-    status: Joi.string()
-      .label('Status')
-      .valid('complete', 'incomplete')
-      .required()
-  })
-}
+const uploadSchema = Joi.object({
+  file: fileSchema.required(),
+  entity: Joi.string().label('Entity Name').valid('upload').required(),
+  status: Joi.string()
+    .label('Status')
+    .valid('complete', 'incomplete')
+    .required()
+})
 
 export default uploadSchema
