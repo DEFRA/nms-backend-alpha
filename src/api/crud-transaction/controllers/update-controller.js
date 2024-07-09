@@ -1,3 +1,4 @@
+import { buildErrorDetails } from '~/src/helpers/build-error-details'
 import { mongoCollections, schemaMapping } from '~/src/helpers/constants'
 import { updateDocument } from '~/src/helpers/databaseTransaction'
 
@@ -6,9 +7,18 @@ const updateController = {
     const { entity, ...payload } = request.payload
     const { id, collection } = request.params
     try {
-      const { error } = schemaMapping[entity].validate(request.payload)
-      if (error) {
-        return h.response({ error: error.details[0].message }).code(400)
+      const validationResult = schemaMapping[entity](entity).validate(
+        request.payload,
+        {
+          abortEarly: false
+        }
+      )
+      if (validationResult?.error) {
+        const errorDetails = buildErrorDetails(validationResult?.error?.details)
+        request.logger.info(
+          `Update document validation error: ${JSON.stringify(errorDetails)}`
+        )
+        return h.response({ error: errorDetails }).code(400)
       }
       const document = await updateDocument(
         request.db,
@@ -18,6 +28,7 @@ const updateController = {
       )
       return h.response({ message: 'success', document }).code(201)
     } catch (error) {
+      request.logger.info(`Create document error: ${error}`)
       return h.response({ error: error.message }).code(500)
     }
   }
