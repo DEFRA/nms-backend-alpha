@@ -145,6 +145,26 @@ const getOptionSetDefinition = async (entity) => {
   }
 }
 
+const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
+  const token = await getAccessToken()
+  const options = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json;odata=verbose',
+      'Content-Type': 'application/octet-stream'
+    },
+    body: fileBuffer
+  }
+  try {
+    const response = await fetchProxyWrapper(uploadUrl, options)
+    return await response.body
+  } catch (error) {
+    logger.info(`Error uploading file to sharepoint: ${error}`)
+    throw error
+  }
+}
+
 export {
   getData,
   createData,
@@ -153,5 +173,6 @@ export {
   createTable,
   createColumn,
   getEntityMetadata,
-  getOptionSetDefinition
+  getOptionSetDefinition,
+  uploadToSharePoint
 }

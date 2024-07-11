@@ -5,6 +5,7 @@ import { config } from '~/src/config/index.js'
 import { mongoCollections } from '~/src/helpers/constants'
 import { readDocument } from '~/src/helpers/database-transaction'
 import { s3Client } from '~/src/helpers/s3-client.js'
+import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
 
 const indexController = {
   handler: async (request, h) => {
@@ -20,19 +21,20 @@ const indexController = {
 
       if (document) {
         if (document?.file) {
-          const { fileUrl: s3Key } = document?.file
-          request.logger.info(`Document details: ${document}`)
+          const { fileUrl: s3Key, filename } = document?.file
           const command = new GetObjectCommand({
             Bucket: config.get('bucket'),
             Key: s3Key
           })
 
           const response = await s3Client.send(command)
-          request.logger.info(`S3 Command Response: ${response}`)
-          return h
-            .response(response.Body)
-            .header('Content-Type', response.ContentType)
-            .code(200)
+          const fileBuffer = response.Body
+          const folderUrl =
+            '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
+          const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
+          const uploadResponse = uploadToSharePoint(uploadUrl, fileBuffer)
+          // .header('Content-Type', response.ContentType)
+          return h.response(uploadResponse).code(200)
         } else {
           return h
             .response({ document, error: 'Document does not have file' })
