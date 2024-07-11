@@ -21,15 +21,16 @@ const indexController = {
       if (document) {
         if (document?.file) {
           const { fileUrl: s3Key } = document?.file
-
+          request.logger.info(`Document details: ${document}`)
           const command = new GetObjectCommand({
             Bucket: config.get('bucket'),
             Key: s3Key
           })
 
           const response = await s3Client.send(command)
+          request.logger.info(`S3 Command Response: ${response}`)
           return h
-            .response({ document, file: response.Body })
+            .response(response.Body)
             .header('Content-Type', response.ContentType)
             .code(200)
         } else {
