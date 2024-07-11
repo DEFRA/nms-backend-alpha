@@ -6,7 +6,7 @@ const sharePoint = {
     register: async (server) => {
       server.route({
         method: 'GET',
-        path: '/sharepoint',
+        path: '/sharepoint/{collection}/{id}',
         ...indexController
       })
     }
