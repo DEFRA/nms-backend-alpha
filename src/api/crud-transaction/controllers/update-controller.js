@@ -1,6 +1,6 @@
 import { buildErrorDetails } from '~/src/helpers/build-error-details'
 import { mongoCollections, schemaMapping } from '~/src/helpers/constants'
-import { updateDocument } from '~/src/helpers/databaseTransaction'
+import { updateDocument } from '~/src/helpers/database-transaction'
 
 const updateController = {
   handler: async (request, h) => {

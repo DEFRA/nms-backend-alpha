@@ -100,6 +100,23 @@ const config = convict({
     format: String,
     default: 'https://defra-nutrientmitigation-dev.crm11.dynamics.com/',
     env: 'DATAVERSE_URI'
+  },
+  awsRegion: {
+    doc: 'AWS region',
+    format: String,
+    default: 'eu-west-2',
+    env: 'AWS_REGION'
+  },
+  localstackEndpoint: {
+    doc: 'Localstack endpoint',
+    format: String,
+    default: 'http://localhost:4566'
+  },
+  bucket: {
+    doc: 'Bucket name',
+    format: String,
+    default: 'nms-local-frontend',
+    env: 'BUCKET'
   }
 })
 

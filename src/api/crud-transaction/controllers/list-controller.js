@@ -1,5 +1,5 @@
 import { mongoCollections } from '~/src/helpers/constants'
-import { readAllDocuments } from '~/src/helpers/databaseTransaction'
+import { readAllDocuments } from '~/src/helpers/database-transaction'
 
 const listController = {
   handler: async (request, h) => {

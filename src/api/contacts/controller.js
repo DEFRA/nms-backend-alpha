@@ -3,7 +3,7 @@ import {
   createDocument,
   readAllDocuments,
   readDocument
-} from '~/src/helpers/databaseTransaction'
+} from '~/src/helpers/database-transaction'
 import contactSchema from '~/src/schema/contact'
 
 const { contact } = mongoCollections
