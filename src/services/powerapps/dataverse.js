@@ -154,7 +154,8 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
       Accept: 'application/json;odata=verbose',
       'Content-Type': 'application/octet-stream'
     },
-    body: fileBuffer
+    body: fileBuffer,
+    duplex: 'half'
   }
   try {
     const response = await fetchProxyWrapper(uploadUrl, options)
