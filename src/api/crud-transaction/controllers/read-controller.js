@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { mongoCollections } from '~/src/helpers/constants'
-import { readDocument } from '~/src/helpers/databaseTransaction'
+import { readDocument } from '~/src/helpers/database-transaction'
 
 const readController = {
   handler: async (request, h) => {

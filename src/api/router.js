@@ -4,6 +4,7 @@ import { dataverse } from '~/src/api/dataverse'
 import { contacts } from '~/src/api/contacts'
 import { crud } from './crud-transaction/index'
 import { jobs } from './job/index'
+import { sharePoint } from './sharepoint/index'
 
 const router = {
   plugin: {
@@ -14,7 +15,7 @@ const router = {
 
       // Application specific routes, add your own routes here.
       await server.register([example])
-      await server.register([dataverse, contacts, crud, jobs])
+      await server.register([dataverse, contacts, crud, jobs, sharePoint])
     }
   }
 }

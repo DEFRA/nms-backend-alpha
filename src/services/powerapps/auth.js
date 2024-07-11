@@ -5,7 +5,6 @@ import { sendGetRequestAsync, sendPostRequestAsync } from './authProxyClient'
 const tenantId = config.get('azTenantId')
 const clientId = config.get('azClientId')
 const clientSecret = config.get('azClientSecret')
-const resourceUrl = config.get('dataverseUri')
 
 const azConfig = {
   auth: {
@@ -22,7 +21,7 @@ const client = new ConfidentialClientApplication(azConfig)
 
 const getAccessToken = async () => {
   const tokenRequest = {
-    scopes: [`${resourceUrl}.default`]
+    scopes: [`https://graph.microsoft.com/.default`]
   }
   try {
     const tokenResponse =
