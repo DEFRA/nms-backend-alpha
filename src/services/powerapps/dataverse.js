@@ -159,7 +159,7 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
   }
   try {
     const response = await fetchProxyWrapper(uploadUrl, options)
-    return await response.body
+    return response.body
   } catch (error) {
     logger.info(`Error uploading file to sharepoint: ${error}`)
     throw error
