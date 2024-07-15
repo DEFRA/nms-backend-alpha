@@ -89,7 +89,7 @@ const developmentSite = Joi.object({
     .default('')
     .allow('')
     .required(),
-  enquiryDateRecieved: Joi.string().max(14).required(),
+  enquiryDateRecieved: Joi.string().max(14).optional(),
   applicationreceivedtime: Joi.string().max(14).required(),
   customerDueDiligenceCheckNeeded: Joi.string()
     .valid('Yes', 'No')
