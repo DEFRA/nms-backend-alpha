@@ -195,25 +195,25 @@ const saveDevelopmentSite = {
         'nm_Catchment@odata.bind': `/nm_catchments(${payload.catchment})`,
         'nm_Subcatchment@odata.bind': `/nm_subcatchmentses(${payload.subCatchment})`,
         // 'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
-        'nm_Round@odata.bind': `/nm_RecordRoundses(${payload.round})`,
+        'nm_Round@odata.bind': `/nm_recordroundses(${payload.round})`,
         nm_planninguseclassofthisdevelopment:
           payload.planningUseClassOfThisDevelopment === ''
             ? null
             : planningUseClassValues[payload.planningUseClassOfThisDevelopment],
         nm_numberofunitstobebuilt: payload.numberOfUnitsToBeBuilt, // number correct
-        nm_smedeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
+        nm_smedeveloper: payload.smeDeveloper === 'Yes', // false
         'nm_LPAs@odata.bind': `/nm_lpas(${payload.lpas})`,
-        nm_planningpermission: payload.planningPermission === 'Yes' ? 1 : 0, // true
-        nm_phaseddevelopment: payload.phasedDevelopment === 'Yes' ? 1 : 0, // false
+        nm_planningpermission: payload.planningPermission === 'Yes', // true
+        nm_phaseddevelopment: payload.phasedDevelopment === 'Yes', // false
         nm_gridreference: payload.gridReference, // value correct
         nm_haveyouincludedamapoftheproposedredlineb:
           payload.haveYouIncludedTheProposedRedLineB === 'Yes'
             ? 930750000
             : 930750001, // value 930750000 Incorrect
-        nm_enquirydaterecieved: payload.enquiryDateRecieved,
+        nm_enquirydaterecieved: payload?.enquiryDateRecieved ?? null,
         nm_applicationreceivedtime: payload.applicationreceivedtime,
         nm_customerduediligencecheckneeded:
-          payload.customerDueDiligenceCheckNeeded === 'Yes' ? 1 : 0, // false
+          payload.customerDueDiligenceCheckNeeded === 'Yes', // false
         nm_urn: payload.urn,
         nm_folderpath: payload.folderPath
         // `/nm_catchments(${payload.catchment})` + '/' + payload.urn
