@@ -175,23 +175,23 @@ const saveDevelopmentSite = {
         nm_creditsalesstatus:
           payload.creditSalesStatus === ''
             ? null
-            : creditSalesStatusValues(payload.creditSalesStatus), // value - correct
+            : creditSalesStatusValues[payload.creditSalesStatus], // value - correct
         'nm_DeveloperCompany@odata.bind': `/nm_organisations(${payload.developerCompany})`,
         'nm_DeveloperEmployee@odata.bind': `/contacts(${payload.developerEmployee})`,
         nm_thedevelopersinterestinthedevelopmentsite:
           payload.theDevelopersInterestInTheDevelopmentSite === ''
             ? null
-            : developerInterestDetails(
+            : developerInterestDetails[
                 payload.theDevelopersInterestInTheDevelopmentSite
-              ), // value 1 correct
+              ], // value 1 correct
         nm_thedeveloperistheapplicant:
           payload.theDeveloperIsTheApplicant === ''
             ? null
-            : developerInterestDetails(payload.theDeveloperIsTheApplicant), // value 1 correct
+            : developerInterestDetails[payload.theDeveloperIsTheApplicant], // value 1 correct
         nm_wastewaterconnectiontype:
           payload.wasteWaterConnectionType === ''
             ? null
-            : wwtwValues(payload.wasteWaterConnectionType),
+            : wwtwValues[payload.wasteWaterConnectionType],
         'nm_Catchment@odata.bind': `/nm_catchments(${payload.catchment})`,
         'nm_Subcatchment@odata.bind': `/nm_subcatchmentses(${payload.subCatchment})`,
         // 'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
@@ -199,7 +199,7 @@ const saveDevelopmentSite = {
         nm_planninguseclassofthisdevelopment:
           payload.planningUseClassOfThisDevelopment === ''
             ? null
-            : planningUseClassValues(payload.planningUseClassOfThisDevelopment),
+            : planningUseClassValues[payload.planningUseClassOfThisDevelopment],
         nm_numberofunitstobebuilt: payload.numberOfUnitsToBeBuilt, // number correct
         nm_smedeveloper: payload.smeDeveloper === 'Yes' ? 1 : 0, // false
         'nm_LPAs@odata.bind': `/nm_lpas(${payload.lpas})`,
