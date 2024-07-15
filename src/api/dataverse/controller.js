@@ -218,7 +218,9 @@ const saveDevelopmentSite = {
         nm_folderpath: payload.folderPath
         // `/nm_catchments(${payload.catchment})` + '/' + payload.urn
       }
-      logger.info('developmentSitePayload >> ' + developmentSitePayload)
+      logger.info(
+        'developmentSitePayload >> ' + JSON.stringify(developmentSitePayload)
+      )
       const developmentSiteRecord = await createData(
         developmentSite,
         developmentSitePayload
