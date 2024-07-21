@@ -1,8 +1,19 @@
+// Import ObjectId from mongodb to handle MongoDB ObjectIds
 import { ObjectId } from 'mongodb'
+// Import the createLogger function to set up logging
 import { createLogger } from '~/src/helpers/logging/logger'
 
+// Create a logger instance for logging information
 const logger = createLogger()
 
+/**
+ * Creates a new document in the specified MongoDB collection.
+ * @param {Object} db - The database connection object.
+ * @param {string} collectionName - The name of the collection where the document will be inserted.
+ * @param {Object} document - The document to be inserted.
+ * @returns {Object|null} - The inserted document if successful, otherwise null.
+ * @throws {Error} - Throws an error if the document creation fails.
+ */
 const createDocument = async (db, collectionName, document) => {
   try {
     const collection = db.collection(collectionName)
@@ -16,6 +27,15 @@ const createDocument = async (db, collectionName, document) => {
   }
 }
 
+/**
+ * Updates an existing document in the specified MongoDB collection.
+ * @param {Object} db - The database connection object.
+ * @param {string} collectionName - The name of the collection where the document will be updated.
+ * @param {string} id - The ObjectId of the document to be updated.
+ * @param {Object} document - The updated document data.
+ * @returns {Object|null} - The updated document if successful, otherwise null.
+ * @throws {Error} - Throws an error if the document update fails.
+ */
 const updateDocument = async (db, collectionName, id, document) => {
   try {
     const collection = db.collection(collectionName)
@@ -41,6 +61,13 @@ const updateDocument = async (db, collectionName, id, document) => {
   }
 }
 
+/**
+ * Reads all documents from the specified MongoDB collection.
+ * @param {Object} db - The database connection object.
+ * @param {string} collectionName - The name of the collection to read documents from.
+ * @returns {Array<Object>} - An array of all documents in the collection.
+ * @throws {Error} - Throws an error if reading documents fails.
+ */
 const readAllDocuments = async (db, collectionName) => {
   try {
     const collection = db.collection(collectionName)
@@ -54,6 +81,14 @@ const readAllDocuments = async (db, collectionName) => {
   }
 }
 
+/**
+ * Reads a specific document from the specified MongoDB collection based on a query.
+ * @param {Object} db - The database connection object.
+ * @param {string} collectionName - The name of the collection to read the document from.
+ * @param {Object} query - The query object to find the document.
+ * @returns {Object|null} - The document if found, otherwise null.
+ * @throws {Error} - Throws an error if reading the document fails.
+ */
 const readDocument = async (db, collectionName, query) => {
   try {
     const collection = db.collection(collectionName)
@@ -65,4 +100,5 @@ const readDocument = async (db, collectionName, query) => {
   }
 }
 
+// Export the functions for use in other modules
 export { createDocument, readAllDocuments, readDocument, updateDocument }

@@ -1,13 +1,24 @@
+// Import constants for MongoDB collections
 import { mongoCollections } from '~/src/helpers/constants'
+// Import database transaction helper functions
 import {
   createDocument,
   readAllDocuments,
   readDocument
 } from '~/src/helpers/database-transaction'
+// Import the contact schema for validation
 import contactSchema from '~/src/schema/contact'
 
+// Extract the contact collection name from mongoCollections
 const { contact } = mongoCollections
 
+/**
+ * Handler to retrieve all documents from the contact collection.
+ * @param {Object} request - The Hapi request object containing the database instance.
+ * @param {Object} h - The Hapi response toolkit for building the response.
+ * @returns {Object} - The response object containing the status message and the list of entities.
+ * @throws {Error} - Returns a 500 status code with the error message if the operation fails.
+ */
 const findAllDocuments = {
   handler: async (request, h) => {
     try {
@@ -20,6 +31,13 @@ const findAllDocuments = {
   }
 }
 
+/**
+ * Handler to retrieve a single document from the contact collection by its ID.
+ * @param {Object} request - The Hapi request object containing the ID parameter and the database instance.
+ * @param {Object} h - The Hapi response toolkit for building the response.
+ * @returns {Object} - The response object containing the status message and the retrieved entity, or an error message if not found.
+ * @throws {Error} - Returns a 500 status code with the error message if the operation fails.
+ */
 const findDocument = {
   handler: async (request, h) => {
     const { id } = request.params
@@ -39,8 +57,17 @@ const findDocument = {
   }
 }
 
+/**
+ * Handler to save a new document to the contact collection.
+ * Validates the request payload using the contact schema before creating the document.
+ * @param {Object} request - The Hapi request object containing the payload and the database instance.
+ * @param {Object} h - The Hapi response toolkit for building the response.
+ * @returns {Object} - The response object containing the status message and the created entity, or an error message if validation fails.
+ * @throws {Error} - Returns a 500 status code with the error message if the operation fails.
+ */
 const saveDocument = {
   handler: async (request, h) => {
+    // Validate the request payload using the contact schema
     const { error, value: payload } = contactSchema.validate(request.payload)
     if (error) {
       return h.response({ error: error.details[0].message }).code(400)
@@ -54,4 +81,5 @@ const saveDocument = {
   }
 }
 
+// Export handlers for use in route definitions
 export { findAllDocuments, findDocument, saveDocument }

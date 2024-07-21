@@ -18,13 +18,21 @@ import {
   getOptionSetDefinition,
   updateData
 } from '~/src/services/powerapps/dataverse'
-// import { config } from '~/src/config/index'
 import { proxyFetch } from '~/src/helpers/proxy-fetch'
 import { createLogger } from '~/src/helpers/logging/logger'
 import { processOptions } from './helpers/process-options'
 
 const logger = createLogger()
 
+/**
+ * Handler for authentication requests.
+ *
+ * Fetches an access token and returns it in the response.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the access token or an error message.
+ */
 const authController = {
   handler: async (request, h) => {
     try {
@@ -36,6 +44,15 @@ const authController = {
   }
 }
 
+/**
+ * Handler for testing the proxy functionality.
+ *
+ * Sends a GET request to an external URL using a proxy and returns the response.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the proxy agent information and response text or error details.
+ */
 const testProxy = {
   handler: async (request, h) => {
     const proxyAgentObj = proxyAgent()
@@ -60,6 +77,15 @@ const testProxy = {
   }
 }
 
+/**
+ * Handler for reading documents from the database.
+ *
+ * Retrieves documents of a specified entity from the database.
+ *
+ * @param {Object} request - The request object containing the entity name in the parameters.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the fetched documents or an error message.
+ */
 const readController = {
   handler: async (request, h) => {
     try {
@@ -67,11 +93,20 @@ const readController = {
       const accounts = await getData(entity)
       return h.response({ message: 'success', data: accounts }).code(200)
     } catch (error) {
-      h.response({ error: error.message }).code(500)
+      return h.response({ error: error.message }).code(500)
     }
   }
 }
 
+/**
+ * Handler for retrieving the metadata of an entity.
+ *
+ * Fetches the metadata schema of a specified entity from the database.
+ *
+ * @param {Object} request - The request object containing the entity name in the parameters.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the entity metadata schema or an error message.
+ */
 const getEntitySchema = {
   handler: async (request, h) => {
     try {
@@ -84,6 +119,15 @@ const getEntitySchema = {
   }
 }
 
+/**
+ * Handler for creating a new document in the database.
+ *
+ * Saves a new document of a specified entity to the database using the provided data.
+ *
+ * @param {Object} request - The request object containing the entity name and data in the payload.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object confirming the successful save or an error message.
+ */
 const postController = {
   handler: async (request, h) => {
     try {
@@ -99,6 +143,15 @@ const postController = {
   }
 }
 
+/**
+ * Handler for saving an organization and contact document.
+ *
+ * Validates and saves organization and contact details. Updates the organization with nationality if provided.
+ *
+ * @param {Object} request - The request object containing the organization and contact data in the payload.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object confirming the successful save or an error message.
+ */
 const saveOrganizationNContact = {
   handler: async (request, h) => {
     const { error, value: payload } = organizationNContact.validate(
@@ -125,7 +178,6 @@ const saveOrganizationNContact = {
             : typeOfDeveloperValues[payload.typeOfDeveloper],
         nm_organisationname: payload.orgName === '' ? null : payload.orgName
       }
-
       const contactPayload = {
         firstname: payload.firstName,
         lastname: payload.lastName,
@@ -133,7 +185,6 @@ const saveOrganizationNContact = {
         nm_email: payload.email,
         nm_Organisation: organizationPayload
       }
-
       const contactRecord = await createData(contact, contactPayload)
       if (
         contactRecord?.contactid &&
@@ -153,21 +204,26 @@ const saveOrganizationNContact = {
   }
 }
 
+/**
+ * Handler for saving a development site document.
+ *
+ * Validates and saves development site details. Handles various fields with possible null values based on provided data.
+ *
+ * @param {Object} request - The request object containing the development site data in the payload.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object confirming the successful save or an error message.
+ */
 const saveDevelopmentSite = {
   handler: async (request, h) => {
     const { error, value: payload } = developmentSite.validate(
       request.payload,
-      {
-        // const { error } = developmentSite.validate(request.payload, {
-        abortEarly: false
-      }
+      { abortEarly: false }
     )
     if (error) {
       return h
         .response({ error: error.details.map((detail) => detail.message) })
         .code(400)
     }
-    // return h.response(config)
     try {
       const { developmentSite } = dataverseEntities
       const developmentSitePayload = {
@@ -175,7 +231,7 @@ const saveDevelopmentSite = {
         nm_creditsalesstatus:
           payload.creditSalesStatus === ''
             ? null
-            : creditSalesStatusValues[payload.creditSalesStatus], // value - correct
+            : creditSalesStatusValues[payload.creditSalesStatus],
         'nm_DeveloperCompany@odata.bind': `/nm_organisations(${payload.developerCompany})`,
         'nm_DeveloperEmployee@odata.bind': `/contacts(${payload.developerEmployee})`,
         nm_thedevelopersinterestinthedevelopmentsite:
@@ -183,40 +239,38 @@ const saveDevelopmentSite = {
             ? null
             : developerInterestDetails[
                 payload.theDevelopersInterestInTheDevelopmentSite
-              ], // value 1 correct
+              ],
         nm_thedeveloperistheapplicant:
           payload.theDeveloperIsTheApplicant === ''
             ? null
-            : developerInterestDetails[payload.theDeveloperIsTheApplicant], // value 1 correct
+            : developerInterestDetails[payload.theDeveloperIsTheApplicant],
         nm_wastewaterconnectiontype:
           payload.wasteWaterConnectionType === ''
             ? null
             : wwtwValues[payload.wasteWaterConnectionType],
         'nm_Catchment@odata.bind': `/nm_catchments(${payload.catchment})`,
         'nm_Subcatchment@odata.bind': `/nm_subcatchmentses(${payload.subCatchment})`,
-        // 'nm_WasteWaterTreatmentWorksConnection@odata.bind': `/nm_wwtws(${payload.wasteWaterTreatmentWorksConnection})`,
         'nm_Round@odata.bind': `/nm_recordroundses(${payload.round})`,
         nm_planninguseclassofthisdevelopment:
           payload.planningUseClassOfThisDevelopment === ''
             ? null
             : planningUseClassValues[payload.planningUseClassOfThisDevelopment],
-        nm_numberofunitstobebuilt: payload.numberOfUnitsToBeBuilt, // number correct
-        nm_smedeveloper: payload.smeDeveloper === 'Yes', // false
+        nm_numberofunitstobebuilt: payload.numberOfUnitsToBeBuilt,
+        nm_smedeveloper: payload.smeDeveloper === 'Yes',
         'nm_LPAs@odata.bind': `/nm_lpas(${payload.lpas})`,
-        nm_planningpermission: payload.planningPermission === 'Yes', // true
-        nm_phaseddevelopment: payload.phasedDevelopment === 'Yes', // false
-        nm_gridreference: payload.gridReference, // value correct
+        nm_planningpermission: payload.planningPermission === 'Yes',
+        nm_phaseddevelopment: payload.phasedDevelopment === 'Yes',
+        nm_gridreference: payload.gridReference,
         nm_haveyouincludedamapoftheproposedredlineb:
           payload.haveYouIncludedTheProposedRedLineB === 'Yes'
             ? 930750000
-            : 930750001, // value 930750000 Incorrect
+            : 930750001,
         nm_enquirydaterecieved: payload?.enquiryDateRecieved ?? null,
         nm_applicationreceivedtime: payload.applicationreceivedtime,
         nm_customerduediligencecheckneeded:
-          payload.customerDueDiligenceCheckNeeded === 'Yes', // false
+          payload.customerDueDiligenceCheckNeeded === 'Yes',
         nm_urn: payload.urn,
         nm_folderpath: payload.folderPath
-        // `/nm_catchments(${payload.catchment})` + '/' + payload.urn
       }
       logger.info(
         'developmentSitePayload >> ' + JSON.stringify(developmentSitePayload)
@@ -225,17 +279,24 @@ const saveDevelopmentSite = {
         developmentSite,
         developmentSitePayload
       )
-
       return h
         .response({ message: 'Save successfully', data: developmentSiteRecord })
         .code(201)
     } catch (error) {
-      return error
-      // return h.response({ error }).code(500)
+      return h.response({ error }).code(500)
     }
   }
 }
 
+/**
+ * Handler for retrieving option sets from the database and processing them.
+ *
+ * Fetches option sets for a specified entity, processes them to extract values and labels, and returns them in the response.
+ *
+ * @param {Object} request - The request object containing the entity name in the parameters.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the processed options or an error message.
+ */
 const readOptionsController = {
   handler: async (request, h) => {
     try {
@@ -254,6 +315,15 @@ const readOptionsController = {
   }
 }
 
+/**
+ * Handler for reading entity data as options.
+ *
+ * Fetches data for a specified entity and processes it to create an options set with values and labels.
+ *
+ * @param {Object} request - The request object containing the entity name in the parameters.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the processed options or an error message.
+ */
 const readEntityAsOptionsController = {
   handler: async (request, h) => {
     try {
