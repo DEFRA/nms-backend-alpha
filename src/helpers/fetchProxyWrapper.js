@@ -1,8 +1,18 @@
+// Import the proxyFetch function to handle HTTP requests with proxy support
 import { proxyFetch } from './proxy-fetch'
+// Import the createLogger function to set up logging
 import { createLogger } from './logging/logger'
 
+// Create a logger instance for logging information
 const logger = createLogger()
 
+/**
+ * Handles the response from a fetch request.
+ * Extracts headers and processes the response body based on the status code.
+ * @param {Response} response - The fetch response object.
+ * @returns {Object} - An object containing the response body, headers, and status code.
+ * @throws {Error} - Throws an error if the response status indicates a failure.
+ */
 const handleResponse = async (response) => {
   const headers = {}
   response.headers.forEach((value, name) => {
@@ -23,6 +33,15 @@ const handleResponse = async (response) => {
   }
 }
 
+/**
+ * A wrapper function for making fetch requests with proxy support and retry logic.
+ * @param {string} url - The URL to fetch.
+ * @param {Object} options - The fetch options such as method, headers, and body.
+ * @param {boolean} [skipProxy=false] - A flag to skip using the proxy.
+ * @param {number} [retries=3] - The number of retry attempts in case of failure.
+ * @returns {Object} - The processed response object from handleResponse.
+ * @throws {Error} - Throws an error if all retry attempts fail.
+ */
 const fetchProxyWrapper = async (
   url,
   options,
@@ -59,4 +78,5 @@ const fetchProxyWrapper = async (
   }
 }
 
+// Export the fetchProxyWrapper and handleResponse functions for use in other modules
 export { fetchProxyWrapper, handleResponse }
