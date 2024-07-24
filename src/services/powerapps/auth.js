@@ -33,7 +33,7 @@ const client = new ConfidentialClientApplication(azConfig)
  */
 const getAccessToken = async () => {
   const tokenRequest = {
-    scopes: [`${resourceUrl}.default`, `https://graph.microsoft.com/.default`]
+    scopes: [`${resourceUrl}.default`]
   }
   try {
     const tokenResponse =
