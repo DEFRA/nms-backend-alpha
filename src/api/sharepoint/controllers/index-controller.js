@@ -6,6 +6,7 @@ import { mongoCollections } from '~/src/helpers/constants'
 import { readDocument } from '~/src/helpers/database-transaction'
 import { s3Client } from '~/src/helpers/s3-client.js'
 import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
+import { streamToBuffer } from '../helpers/stream-to-buffer'
 
 const indexController = {
   handler: async (request, h) => {
@@ -28,7 +29,7 @@ const indexController = {
           })
 
           const response = await s3Client.send(command)
-          const fileBuffer = response.Body
+          const fileBuffer = await streamToBuffer(response.Body)
           const folderUrl =
             '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
           const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
