@@ -1,7 +1,7 @@
 // Import configuration settings
 import { config } from '~/src/config'
 // Import the getAccessToken function for authentication
-import { getAccessToken } from './auth'
+import { getAccessToken, getSPAccessToken } from './auth'
 // Import the fetchProxyWrapper function for making HTTP requests
 import { fetchProxyWrapper } from '~/src/helpers/fetchProxyWrapper'
 // Import the createLogger function to set up logging
@@ -218,7 +218,7 @@ const getOptionSetDefinition = async (entity) => {
  * @throws {Error} - Throws an error if the file upload fails.
  */
 const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
-  const token = await getAccessToken()
+  const token = await getSPAccessToken()
   const options = {
     method: 'POST',
     headers: {

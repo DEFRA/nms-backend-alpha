@@ -44,5 +44,23 @@ const getAccessToken = async () => {
   }
 }
 
+/**
+ * Acquires an access token from Azure AD using client credentials.
+ * @returns {string} - The access token if successfully acquired.
+ * @throws {Error} - Throws an error if the token acquisition fails.
+ */
+const getSPAccessToken = async () => {
+  const tokenRequest = {
+    scopes: [`https://graph.microsoft.com/.default`]
+  }
+  try {
+    const tokenResponse =
+      await client.acquireTokenByClientCredential(tokenRequest)
+    return tokenResponse?.accessToken
+  } catch (error) {
+    throw new Error('Failed to acquire SharePoint token')
+  }
+}
+
 // Export the getAccessToken function for use in other modules
-export { getAccessToken }
+export { getAccessToken, getSPAccessToken }
