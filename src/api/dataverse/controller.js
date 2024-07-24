@@ -10,7 +10,7 @@ import {
 import { proxyAgent } from '~/src/helpers/proxy-agent'
 import organizationNContact from '~/src/schema/organizationNContact'
 import developmentSite from '~/src/schema/developmentSite'
-import { getAccessToken } from '~/src/services/powerapps/auth'
+import { getAccessToken, getSPAccessToken } from '~/src/services/powerapps/auth'
 import {
   createData,
   getData,
@@ -37,6 +37,26 @@ const authController = {
   handler: async (request, h) => {
     try {
       const token = await getAccessToken()
+      return h.response({ message: 'success', token }).code(200)
+    } catch (error) {
+      return h.response({ error }).code(500)
+    }
+  }
+}
+
+/**
+ * Handler for authentication requests.
+ *
+ * Fetches an access token and returns it in the response.
+ *
+ * @param {Object} request - The request object.
+ * @param {Object} h - The response toolkit.
+ * @returns {Object} - The response object containing the access token or an error message.
+ */
+const authSPController = {
+  handler: async (request, h) => {
+    try {
+      const token = await getSPAccessToken()
       return h.response({ message: 'success', token }).code(200)
     } catch (error) {
       return h.response({ error }).code(500)
@@ -351,5 +371,6 @@ export {
   saveDevelopmentSite,
   testProxy,
   readOptionsController,
-  readEntityAsOptionsController
+  readEntityAsOptionsController,
+  authSPController
 }
