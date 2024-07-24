@@ -27,7 +27,7 @@ const handleResponse = async (response) => {
     }
   } else {
     const errorMessage = `Request failed with status: ${response.status}`
-    logger.info(response)
+    logger.info(`Details error response: ${JSON.stringify(response)}`)
     logger.info(errorMessage)
     throw new Error(errorMessage)
   }
