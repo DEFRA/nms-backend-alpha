@@ -7,7 +7,8 @@ import {
   saveDevelopmentSite,
   testProxy,
   readOptionsController,
-  readEntityAsOptionsController
+  readEntityAsOptionsController,
+  authSPController
 } from '~/src/api/dataverse/controller'
 
 const dataverse = {
@@ -19,6 +20,11 @@ const dataverse = {
           method: 'GET',
           path: '/dataverse',
           ...authController
+        },
+        {
+          method: 'GET',
+          path: '/dataverse-sp',
+          ...authSPController
         },
         {
           method: 'GET',
