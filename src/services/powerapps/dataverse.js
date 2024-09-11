@@ -230,6 +230,7 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
     duplex: 'half'
   }
   try {
+    logger.info('Upload URL >>> ' + uploadUrl)
     const response = await fetchProxyWrapper(uploadUrl, options)
     return response.body
   } catch (error) {
