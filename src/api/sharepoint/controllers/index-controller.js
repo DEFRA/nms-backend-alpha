@@ -33,6 +33,7 @@ const indexController = {
           const folderUrl =
             '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
           const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
+          request.logger.info('uploadUrl >> ' + uploadUrl)
           const uploadResponse = await uploadToSharePoint(uploadUrl, fileBuffer)
           // .header('Content-Type', response.ContentType)
           return h.response(uploadResponse).code(200)
