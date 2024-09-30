@@ -21,6 +21,7 @@ const indexController = {
       )
 
       if (document) {
+        request.logger.info('Document has been read from MongoDB')
         if (document?.file) {
           const { fileUrl: s3Key, filename } = document?.file
           const command = new GetObjectCommand({
