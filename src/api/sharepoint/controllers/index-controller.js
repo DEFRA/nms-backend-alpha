@@ -10,6 +10,7 @@ import { streamToBuffer } from '../helpers/stream-to-buffer'
 
 const indexController = {
   handler: async (request, h) => {
+    request.logger.info('Reading Document from MongoDB')
     const { id, collection } = request.params
     try {
       const document = await readDocument(
@@ -19,7 +20,7 @@ const indexController = {
           _id: new ObjectId(id)
         }
       )
-
+      request.logger.info('ReadDocument successful')
       if (document) {
         request.logger.info('Document has been read from MongoDB')
         if (document?.file) {
