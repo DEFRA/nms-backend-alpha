@@ -1,12 +1,14 @@
-import { GetObjectCommand } from '@aws-sdk/client-s3'
+// import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { ObjectId } from 'mongodb'
 
-import { config } from '~/src/config/index.js'
+// import { config } from '~/src/config/index.js'
 import { mongoCollections } from '~/src/helpers/constants'
 import { readDocument } from '~/src/helpers/database-transaction'
-import { s3Client } from '~/src/helpers/s3-client.js'
-import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
-import { streamToBuffer } from '../helpers/stream-to-buffer'
+// import { s3Client } from '~/src/helpers/s3-client.js'
+// import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
+// import { streamToBuffer } from '../helpers/stream-to-buffer'
+
+// import { createLogger } from '~/src/helpers/logging/logger'
 
 const indexController = {
   handler: async (request, h) => {
@@ -23,7 +25,8 @@ const indexController = {
       request.logger.info('ReadDocument successful')
       if (document) {
         request.logger.info('Document has been read from MongoDB')
-        if (document?.file) {
+        return h.response('Successful').code(200)
+        /* if (document?.file) {
           const { fileUrl: s3Key, filename } = document?.file
           const command = new GetObjectCommand({
             Bucket: config.get('bucket'),
@@ -43,7 +46,7 @@ const indexController = {
           return h
             .response({ document, error: 'Document does not have file' })
             .code(404)
-        }
+        } */
       } else {
         return h.response({ error: 'Document not found' }).code(404)
       }
