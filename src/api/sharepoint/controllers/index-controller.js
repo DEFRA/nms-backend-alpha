@@ -1,12 +1,12 @@
-// import { GetObjectCommand } from '@aws-sdk/client-s3'
+import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { ObjectId } from 'mongodb'
 
-// import { config } from '~/src/config/index.js'
+import { config } from '~/src/config/index.js'
 import { mongoCollections } from '~/src/helpers/constants'
 import { readDocument } from '~/src/helpers/database-transaction'
-// import { s3Client } from '~/src/helpers/s3-client.js'
+import { s3Client } from '~/src/helpers/s3-client.js'
 // import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
-// import { streamToBuffer } from '../helpers/stream-to-buffer'
+import { streamToBuffer } from '../helpers/stream-to-buffer'
 
 // import { createLogger } from '~/src/helpers/logging/logger'
 
@@ -25,8 +25,7 @@ const indexController = {
       request.logger.info('ReadDocument successful')
       if (document) {
         request.logger.info('Document has been read from MongoDB')
-        return h.response('Successful').code(200)
-        /* if (document?.file) {
+        if (document?.file) {
           const { fileUrl: s3Key, filename } = document?.file
           const command = new GetObjectCommand({
             Bucket: config.get('bucket'),
@@ -35,18 +34,20 @@ const indexController = {
 
           const response = await s3Client.send(command)
           const fileBuffer = await streamToBuffer(response.Body)
+          request.logger.info('fileBuffer >>>    ' + fileBuffer)
           const folderUrl =
             '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
           const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
           request.logger.info('uploadUrl >> ' + uploadUrl)
-          const uploadResponse = await uploadToSharePoint(uploadUrl, fileBuffer)
+          return h.response('Successful without Uploading to SP').code(200)
+          // const uploadResponse = await uploadToSharePoint(uploadUrl, fileBuffer)
           // .header('Content-Type', response.ContentType)
-          return h.response(uploadResponse).code(200)
+          // return h.response(uploadResponse).code(200)
         } else {
           return h
             .response({ document, error: 'Document does not have file' })
             .code(404)
-        } */
+        }
       } else {
         return h.response({ error: 'Document not found' }).code(404)
       }
