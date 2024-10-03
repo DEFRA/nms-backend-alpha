@@ -84,7 +84,7 @@ const indexController = {
           const logicAppResponse = await callLogicApp(logicAppUrl)
           request.logger.info('logicAppResponse >> ' + logicAppResponse)
           // .header('Content-Type', response.ContentType)
-          return h.response(logicAppResponse).code(200)
+          return h.response('Logic App invoked !!!').code(200)
         } else {
           return h
             .response({ document, error: 'Document does not have file' })
