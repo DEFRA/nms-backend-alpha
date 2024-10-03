@@ -1,16 +1,15 @@
-import { GetObjectCommand } from '@aws-sdk/client-s3'
+// import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { ObjectId } from 'mongodb'
 
-import { config } from '~/src/config/index.js'
+// import { config } from '~/src/config/index.js'
 import { mongoCollections } from '~/src/helpers/constants'
 import { readDocument } from '~/src/helpers/database-transaction'
-import { s3Client } from '~/src/helpers/s3-client.js'
+// import { s3Client } from '~/src/helpers/s3-client.js'
 // import { uploadToSharePoint } from '~/src/services/powerapps/dataverse'
-import { streamToBuffer } from '../helpers/stream-to-buffer'
+// import { streamToBuffer } from '../helpers/stream-to-buffer'
+import { callLogicApp } from '~/src/services/powerapps/dataverse'
 
-// import { createLogger } from '~/src/helpers/logging/logger'
-
-const indexController = {
+/* const indexController = {
   handler: async (request, h) => {
     request.logger.info('Reading Document from MongoDB')
     const { id, collection } = request.params
@@ -38,11 +37,54 @@ const indexController = {
           const folderUrl =
             '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
           const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
-          request.logger.info('uploadUrl >> ' + uploadUrl)
-          return h.response('Successful without Uploading to SP').code(200)
-          // const uploadResponse = await uploadToSharePoint(uploadUrl, fileBuffer)
+          const logicAppUrl = 'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow1/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=trstytkwONJ7yjp7Dd4ABqxKQmBdwbRDRX2iYtuHeM0'
+          request.logger.info('logicAppUrl >> ' + logicAppUrl)
+          // return h.response('Successful without Uploading to SP').code(200)
+          const logicAppResponse = await callLogicApp(logicAppUrl)
+          request.logger.info('logicAppResponse >> ' + logicAppResponse)
+          const uploadResponse = await uploadToSharePoint(uploadUrl, fileBuffer)
+          request.logger.info('uploadResponse >> ' + uploadResponse)
           // .header('Content-Type', response.ContentType)
-          // return h.response(uploadResponse).code(200)
+          return h.response(logicAppResponse).code(200)
+        } else {
+          return h
+            .response({ document, error: 'Document does not have file' })
+            .code(404)
+        }
+      } else {
+        return h.response({ error: 'Document not found' }).code(404)
+      }
+    } catch (err) {
+      request.logger.error(err)
+      return h.response('File Not Found').code(404)
+    }
+  }
+} */
+
+const indexController = {
+  handler: async (request, h) => {
+    request.logger.info('Reading Document from MongoDB')
+    const { id, collection } = request.params
+    try {
+      const document = await readDocument(
+        request.db,
+        mongoCollections[collection],
+        {
+          _id: new ObjectId(id)
+        }
+      )
+      request.logger.info('ReadDocument successful')
+      if (document) {
+        request.logger.info('Document has been read from MongoDB')
+        if (document?.file) {
+          const logicAppUrl =
+            'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow1/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=trstytkwONJ7yjp7Dd4ABqxKQmBdwbRDRX2iYtuHeM0'
+          request.logger.info('logicAppUrl >> ' + logicAppUrl)
+          // return h.response('Successful without Uploading to SP').code(200)
+          const logicAppResponse = await callLogicApp(logicAppUrl)
+          request.logger.info('logicAppResponse >> ' + logicAppResponse)
+          // .header('Content-Type', response.ContentType)
+          return h.response(logicAppResponse).code(200)
         } else {
           return h
             .response({ document, error: 'Document does not have file' })
