@@ -239,6 +239,17 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
   }
 }
 
+const callLogicApp = async (logicAppUrl) => {
+  try {
+    logger.info('Logic App URL >>> ' + logicAppUrl)
+    const response = await fetchProxyWrapper(logicAppUrl)
+    return response.body
+  } catch (error) {
+    logger.info(`Error uploading file to SharePoint: ${error}`)
+    throw error
+  }
+}
+
 // Export functions for use in other modules
 export {
   getData,
@@ -249,5 +260,6 @@ export {
   createColumn,
   getEntityMetadata,
   getOptionSetDefinition,
-  uploadToSharePoint
+  uploadToSharePoint,
+  callLogicApp
 }
