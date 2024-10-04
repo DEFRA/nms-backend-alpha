@@ -242,7 +242,7 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
 const callLogicApp = async (logicAppUrl) => {
   try {
     logger.info(`Logic App URL in callLogicApp >>> ${logicAppUrl} `)
-    const response = await fetchProxyWrapper(logicAppUrl)
+    const response = await fetchProxyWrapper(logicAppUrl, {})
     logger.info(`Logic App Response >>> ${response.body} `)
     return response.body
   } catch (error) {
