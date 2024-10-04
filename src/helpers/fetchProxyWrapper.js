@@ -18,7 +18,9 @@ const handleResponse = async (response) => {
   response.headers.forEach((value, name) => {
     headers[name] = value
   })
-
+  logger.info('After going through headers')
+  const errorMsg = `Request failed with status: ${response.status}`
+  logger.info(errorMsg)
   if (response.status >= 200 && response.status < 300) {
     return {
       body: await response.json(),
@@ -51,6 +53,7 @@ const fetchProxyWrapper = async (
   let attempt = 0
   while (attempt < retries) {
     try {
+      logger.info('Before doing proxy fetch')
       const response = await proxyFetch(
         url,
         {
