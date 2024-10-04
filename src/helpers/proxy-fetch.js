@@ -23,4 +23,19 @@ const proxyFetch = (url, opts, skipProxy = false) => {
   }
 }
 
-export { proxyFetch }
+const proxyFetchWithoutOpts = (url, skipProxy = false) => {
+  const proxy = config.get('httpsProxy') ?? config.get('httpProxy')
+  if (!proxy || skipProxy) {
+    return nonProxyFetch(url)
+  } else {
+    return undiciFetch(url, {
+      dispatcher: new ProxyAgent({
+        uri: proxy,
+        keepAliveTimeout: 10,
+        keepAliveMaxTimeout: 10
+      })
+    })
+  }
+}
+
+export { proxyFetch, proxyFetchWithoutOpts }

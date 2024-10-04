@@ -2,9 +2,16 @@
 import { proxyFetch } from './proxy-fetch'
 // Import the createLogger function to set up logging
 import { createLogger } from './logging/logger'
+// Import configuration settings
+// import { config } from '~/src/config'
+// import { ProxyAgent } from 'undici'
+// import { HttpsProxyAgent } from 'https-proxy-agent'
+// import { URL } from 'node:url'
 
 // Create a logger instance for logging information
 const logger = createLogger()
+
+// const proxyUrlConfig = config.get('httpsProxy') ?? config.get('httpProxy')
 
 /**
  * Handles the response from a fetch request.
@@ -80,6 +87,42 @@ const fetchProxyWrapper = async (
     }
   }
 }
+
+/* const fetchProxyWrapperWithNoOptions = async (
+  url,
+  skipProxy = false,
+  retries = 3
+) => {
+  let attempt = 0
+  while (attempt < retries) {
+    try {
+      logger.info('Before setting up proxy')
+      const response = proxyFetchWithoutOpts(url, skipProxy)
+      const proxyUrl = new URL(url)
+      const port = 443
+      logger.info(`Proxy set up using ${proxyUrl.origin}:${port}`)
+      return {
+        proxyUrl,
+        port,
+        proxyAgent: new ProxyAgent({
+          uri: proxyUrl,
+          keepAliveTimeout: 10,
+          keepAliveMaxTimeout: 10
+        }),
+        httpAndHttpsProxyAgent: new HttpsProxyAgent(proxyUrl)
+      } 
+    } catch (error) {
+      logger.info(error)
+      logger.info(`Attempt ${attempt + 1} failed: ${error.message}`)
+      if (attempt < retries - 1) {
+        attempt++
+        logger.info(`Retrying... (${attempt + 1}/${retries})`)
+      } else {
+        throw error
+      }
+    }
+  }
+} */
 
 // Export the fetchProxyWrapper and handleResponse functions for use in other modules
 export { fetchProxyWrapper, handleResponse }
