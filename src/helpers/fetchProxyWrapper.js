@@ -1,5 +1,5 @@
 // Import the proxyFetch function to handle HTTP requests with proxy support
-import { proxyFetch } from './proxy-fetch'
+import { proxyFetch, proxyFetchWithoutOpts } from './proxy-fetch'
 // Import the createLogger function to set up logging
 import { createLogger } from './logging/logger'
 // Import configuration settings
@@ -26,7 +26,7 @@ const handleResponse = async (response) => {
     headers[name] = value
   })
   logger.info('After going through headers')
-  const errorMsg = `Request failed with status: ${response.status}`
+  const errorMsg = `Response status: ${response.status}`
   logger.info(errorMsg)
   if (response.status >= 200 && response.status < 300) {
     return {
@@ -88,7 +88,7 @@ const fetchProxyWrapper = async (
   }
 }
 
-/* const fetchProxyWrapperWithNoOptions = async (
+const fetchProxyWrapperWithNoOptions = async (
   url,
   skipProxy = false,
   retries = 3
@@ -98,7 +98,8 @@ const fetchProxyWrapper = async (
     try {
       logger.info('Before setting up proxy')
       const response = proxyFetchWithoutOpts(url, skipProxy)
-      const proxyUrl = new URL(url)
+      return await handleResponse(response)
+      /* const proxyUrl = new URL(url)
       const port = 443
       logger.info(`Proxy set up using ${proxyUrl.origin}:${port}`)
       return {
@@ -109,8 +110,8 @@ const fetchProxyWrapper = async (
           keepAliveTimeout: 10,
           keepAliveMaxTimeout: 10
         }),
-        httpAndHttpsProxyAgent: new HttpsProxyAgent(proxyUrl)
-      } 
+        httpAndHttpsProxyAgent: new HttpsProxyAgent(proxyUrl) 
+      } */
     } catch (error) {
       logger.info(error)
       logger.info(`Attempt ${attempt + 1} failed: ${error.message}`)
@@ -122,7 +123,7 @@ const fetchProxyWrapper = async (
       }
     }
   }
-} */
+}
 
 // Export the fetchProxyWrapper and handleResponse functions for use in other modules
-export { fetchProxyWrapper, handleResponse }
+export { fetchProxyWrapper, handleResponse, fetchProxyWrapperWithNoOptions }
