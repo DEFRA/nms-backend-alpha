@@ -116,6 +116,8 @@ const fetchProxyWrapperWithNoOptions = async (
     try {
       logger.info('Before setting up proxy')
       const response = proxyFetchWithoutOpts(url, skipProxy)
+      const responseStatus = `Response status after fetching proxy : ${response.status}`
+      logger.info(responseStatus)
       return await handleResponseForNoOpts(response)
       /* const proxyUrl = new URL(url)
       const port = 443
