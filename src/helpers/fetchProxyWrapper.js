@@ -42,6 +42,24 @@ const handleResponse = async (response) => {
   }
 }
 
+const handleResponseForNoOpts = async (response) => {
+  const headers = {}
+  const errorMsg = `Response status: ${response.status}`
+  logger.info(errorMsg)
+  if (response.status >= 200 && response.status < 300) {
+    return {
+      body: await response.json(),
+      headers,
+      status: response.status
+    }
+  } else {
+    const errorMessage = `Request failed with status: ${response.status}`
+    logger.info(`Details error response: ${JSON.stringify(response)}`)
+    logger.info(errorMessage)
+    throw new Error(errorMessage)
+  }
+}
+
 /**
  * A wrapper function for making fetch requests with proxy support and retry logic.
  * @param {string} url - The URL to fetch.
@@ -98,7 +116,7 @@ const fetchProxyWrapperWithNoOptions = async (
     try {
       logger.info('Before setting up proxy')
       const response = proxyFetchWithoutOpts(url, skipProxy)
-      return await handleResponse(response)
+      return await handleResponseForNoOpts(response)
       /* const proxyUrl = new URL(url)
       const port = 443
       logger.info(`Proxy set up using ${proxyUrl.origin}:${port}`)
