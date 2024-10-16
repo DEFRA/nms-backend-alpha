@@ -27,12 +27,15 @@ const proxyFetch = (url, opts, skipProxy = false) => {
 }
 
 const proxyFetchWithoutOpts = (url, skipProxy = false) => {
+  logger.info('Inside proxyFetchWithoutOpts')
   const proxy = config.get('httpsProxy') ?? config.get('httpProxy')
   const proxyMsg = `Proxy from config: ${proxy}`
   logger.info(proxyMsg)
   if (!proxy || skipProxy) {
+    logger.info('Inside If block!!!!')
     return nonProxyFetch(url)
   } else {
+    logger.info('Inside Else block!!!!')
     return undiciFetch(url, {
       dispatcher: new ProxyAgent({
         uri: proxy,
