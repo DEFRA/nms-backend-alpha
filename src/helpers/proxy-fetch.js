@@ -31,6 +31,9 @@ const proxyFetchWithoutOpts = (url, skipProxy = false) => {
   const proxy = config.get('httpsProxy') ?? config.get('httpProxy')
   const proxyMsg = `Proxy from config: ${proxy}`
   logger.info(proxyMsg)
+  logger.info(skipProxy)
+  const text = `Boolean expression : ${!proxy || skipProxy}`
+  logger.info(text)
   if (!proxy || skipProxy) {
     logger.info('Inside If block!!!!')
     return nonProxyFetch(url, {})
