@@ -34,19 +34,13 @@ const proxyFetchWithoutOpts = (url, skipProxy = false) => {
   logger.info(skipProxy)
   const text = `Boolean expression : ${!proxy || skipProxy}`
   logger.info(text)
-  if (!proxy || skipProxy) {
-    logger.info('Inside If block!!!!')
-    return nonProxyFetch(url, {})
-  } else {
-    logger.info('Inside Else block!!!!')
-    return undiciFetch(url, {
-      dispatcher: new ProxyAgent({
-        uri: proxy,
-        keepAliveTimeout: 10,
-        keepAliveMaxTimeout: 10
-      })
+  return undiciFetch(url, {
+    dispatcher: new ProxyAgent({
+      uri: proxy,
+      keepAliveTimeout: 10,
+      keepAliveMaxTimeout: 10
     })
-  }
+  })
 }
 
 export { proxyFetch, proxyFetchWithoutOpts }
