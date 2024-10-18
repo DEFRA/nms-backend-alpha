@@ -33,7 +33,7 @@ const proxyFetchWithoutOpts = (url, skipProxy = false) => {
   logger.info(proxyMsg)
   if (!proxy || skipProxy) {
     logger.info('Inside If block!!!!')
-    return nonProxyFetch(url)
+    return nonProxyFetch(url, {})
   } else {
     logger.info('Inside Else block!!!!')
     return undiciFetch(url, {
