@@ -116,6 +116,8 @@ const fetchProxyWrapperWithNoOptions = async (
     try {
       logger.info('Before setting up proxy')
       const response = proxyFetchWithoutOpts(url, skipProxy)
+      const responseMsg = `Response sent by proxy : ${response}`
+      logger.info(responseMsg)
       const responseStatus = `Response status after fetching proxy : ${response.status}`
       logger.info(responseStatus)
       return await handleResponseForNoOpts(response)
