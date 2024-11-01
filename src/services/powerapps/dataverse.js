@@ -221,7 +221,7 @@ const getOptionSetDefinition = async (entity) => {
  * @throws {Error} - Throws an error if the file upload fails.
  */
 const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
-  const token = await getSPAccessToken()
+  const token = getSPAccessToken()
   const options = {
     method: 'POST',
     headers: {
