@@ -223,7 +223,7 @@ const getOptionSetDefinition = async (entity) => {
 const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
   const token = getSPAccessToken()
   const options = {
-    method: 'POST',
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json;odata=verbose',
