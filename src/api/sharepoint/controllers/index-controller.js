@@ -30,12 +30,13 @@ const indexController = {
             Bucket: config.get('bucket'),
             Key: s3Key
           })
-
+          request.logger.info('filename    ' + filename)
           const response = await s3Client.send(command)
           const fileBuffer = await streamToBuffer(response.Body)
-          const folderUrl =
-            '/sites/NutrientNeutralityprojectdelivery/Credit Sales/Avon/NM-D-Av-0008/Applications'
-          const uploadUrl = `https://defradev.sharepoint.com${folderUrl}/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
+          // const folderUrl = '/Credit Sales/Avon/NM-D-Av-0008/Applications'
+          const uploadUrl = `https://defradev.sharepoint.com/sites/NutrientNeutralityProjectDelivery/_api/web/getfolderbyserverrelativeurl('test')`
+          request.logger.info('uploadUrl    ' + uploadUrl)
+          // const uploadUrl = `https://defradev.sharepoint.com/sites/NutrientNeutralityprojectdelivery/_api/web/getfolderbyserverrelativeurl('${folderUrl}')/files/add(overwrite=true, url='${filename}')`
           // const logicAppUrl = 'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow1/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=trstytkwONJ7yjp7Dd4ABqxKQmBdwbRDRX2iYtuHeM0'
           // return h.response('Successful without Uploading to SP').code(200)
           request.logger.info('fileBuffer before uploading    ' + fileBuffer)
