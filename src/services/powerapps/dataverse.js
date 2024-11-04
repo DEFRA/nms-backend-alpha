@@ -253,9 +253,9 @@ const callLogicApp = async (logicAppUrl) => {
         'Content-Type': 'application/octet-stream'
       },
       // body: fileBuffer,
-      body: {
+      body: JSON.stringify({
         key: 'Text sent by Node App'
-      },
+      }),
       duplex: 'half'
     }
     const response = await fetchProxyWrapper(logicAppUrl, options)
