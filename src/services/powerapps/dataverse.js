@@ -1,12 +1,9 @@
 // Import configuration settings
 import { config } from '~/src/config'
 // Import the getAccessToken function for authentication
-import { getAccessToken, getSPAccessToken } from './auth'
+import { getAccessToken } from './auth'
 // Import the fetchProxyWrapper function for making HTTP requests
-import {
-  fetchProxyWrapper,
-  fetchProxyWrapperWithNoOptions
-} from '~/src/helpers/fetchProxyWrapper'
+import { fetchProxyWrapper } from '~/src/helpers/fetchProxyWrapper'
 // Import the createLogger function to set up logging
 import { createLogger } from '~/src/helpers/logging/logger'
 
@@ -221,15 +218,18 @@ const getOptionSetDefinition = async (entity) => {
  * @throws {Error} - Throws an error if the file upload fails.
  */
 const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
-  const token = getSPAccessToken()
+  // const token = getSPAccessToken()
   const options = {
-    method: 'GET',
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${token}`,
+      // Authorization: `Bearer ${token}`,
       Accept: 'application/json;odata=verbose',
       'Content-Type': 'application/octet-stream'
     },
     // body: fileBuffer,
+    body: {
+      key: 'Text sent by Node App'
+    },
     duplex: 'half'
   }
   try {
@@ -245,7 +245,20 @@ const uploadToSharePoint = async (uploadUrl, fileBuffer) => {
 const callLogicApp = async (logicAppUrl) => {
   try {
     logger.info(`Logic App URL in callLogicApp >>> ${logicAppUrl} `)
-    const response = await fetchProxyWrapperWithNoOptions(logicAppUrl, {})
+    const options = {
+      method: 'POST',
+      headers: {
+        // Authorization: `Bearer ${token}`,
+        Accept: 'application/json;odata=verbose',
+        'Content-Type': 'application/octet-stream'
+      },
+      // body: fileBuffer,
+      body: {
+        key: 'Text sent by Node App'
+      },
+      duplex: 'half'
+    }
+    const response = await fetchProxyWrapper(logicAppUrl, options)
     logger.info(`Logic App Response >>> ${response.body} `)
     return response.body
   } catch (error) {
