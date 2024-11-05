@@ -256,12 +256,12 @@ const callLogicApp = async (logicAppUrl) => {
       },
       duplex: 'half'
     }
-    logger.info(options)
-    const input = JSON.parse(options)
-    logger.info(input)
-    // const response = await fetchProxyWrapper(logicAppUrl, options)
-    // logger.info(`Logic App Response >>> ${response.body} `)
-    // return response.body
+    // logger.info(options)
+    // const input = JSON.parse(options)
+    // logger.info(input)
+    const response = await fetchProxyWrapper(logicAppUrl, options)
+    logger.info(`Logic App Response >>> ${response.body} `)
+    return response.body
   } catch (error) {
     logger.info(`Error uploading file to LogicApp: ${error}`)
     throw error
