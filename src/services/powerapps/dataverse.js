@@ -248,14 +248,12 @@ const callLogicApp = async (logicAppUrl) => {
     const options = {
       method: 'POST',
       headers: {
-        // Authorization: `Bearer ${token}`,
         Accept: 'application/json;odata=verbose',
         'Content-Type': 'application/octet-stream'
       },
-      // body: fileBuffer,
-      body: JSON.stringify({
+      body: {
         key: 'Text sent by Node App'
-      }),
+      },
       duplex: 'half'
     }
     logger.info(options)
