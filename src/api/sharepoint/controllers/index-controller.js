@@ -78,7 +78,7 @@ const indexController = {
           // const logicAppUrl =
           // 'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow1/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=trstytkwONJ7yjp7Dd4ABqxKQmBdwbRDRX2iYtuHeM0'
           const logicAppUrl =
-            'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow2/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=mVVmYVTe2ZV42CRgqqfpc193qSHNPgbKhho0AqnvqEQ'
+            'https://devnmswebaf1401.azurewebsites.net:443/api/Workflow3/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=KD1Dg6qXajE-9RGiCDfwM85nW1NyMwATmWI3bfPOpy8'
           request.logger.info(`Before invoking logicAppUrl `)
           // return h.response('Successful without Uploading to SP').code(200)
           const logicAppResponse = await callLogicApp(logicAppUrl)
