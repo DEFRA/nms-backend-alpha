@@ -256,7 +256,7 @@ const callLogicApp = async (logicAppUrl) => {
       },
       duplex: 'half'
     }
-    // logger.info(options)
+    logger.info(options)
     // const input = JSON.parse(options)
     // logger.info(input)
     const response = await fetchProxyWrapper(logicAppUrl, options)
