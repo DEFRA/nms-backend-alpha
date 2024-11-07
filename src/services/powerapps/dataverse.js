@@ -249,7 +249,7 @@ const callLogicApp = async (logicAppUrl) => {
       method: 'POST',
       headers: {
         Accept: 'application/json;odata=verbose',
-        'Content-Type': 'application/octet-stream'
+        'Content-Type': 'application/json'
       },
       body: {
         key: 'Text sent by Node App'
