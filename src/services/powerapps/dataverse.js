@@ -251,9 +251,9 @@ const callLogicApp = async (logicAppUrl) => {
         Accept: 'application/json;odata=verbose',
         'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         key: 'Request body sent by Node App'
-      },
+      }),
       duplex: 'half'
     }
     logger.info(options)
