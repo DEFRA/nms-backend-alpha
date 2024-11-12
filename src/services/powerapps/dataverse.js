@@ -252,7 +252,7 @@ const callLogicApp = async (logicAppUrl) => {
         'Content-Type': 'application/json'
       },
       body: {
-        key: 'Text sent by Node App'
+        key: 'Request body sent by Node App'
       },
       duplex: 'half'
     }
