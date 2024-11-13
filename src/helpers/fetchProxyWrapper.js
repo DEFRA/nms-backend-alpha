@@ -30,7 +30,7 @@ const handleResponse = async (response) => {
   logger.info(errorMsg)
   if (response.status >= 200 && response.status < 300) {
     return {
-      body: await response.json(),
+      body: await response.text,
       headers,
       status: response.status
     }
