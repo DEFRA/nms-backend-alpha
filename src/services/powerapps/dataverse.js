@@ -253,8 +253,7 @@ const callLogicApp = async (logicAppUrl) => {
       },
       body: JSON.stringify({
         key: 'Request body sent by Node App'
-      }),
-      duplex: 'half'
+      })
     }
     logger.info(options)
     // const input = JSON.parse(options)
