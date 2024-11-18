@@ -25,9 +25,6 @@ const handleResponse = async (response) => {
   response.headers.forEach((value, name) => {
     headers[name] = value
   })
-  logger.info('After going through headers')
-  const errorMsg = `Response status: ${response.status}`
-  logger.info(errorMsg)
   if (response.status >= 200 && response.status < 300) {
     return {
       body: await response.text,

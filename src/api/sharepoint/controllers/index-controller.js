@@ -61,7 +61,6 @@ import { callLogicApp } from '~/src/services/powerapps/dataverse'
 
 const indexController = {
   handler: async (request, h) => {
-    request.logger.info('Reading Document from MongoDB')
     const { id, collection } = request.params
     try {
       const document = await readDocument(
@@ -71,19 +70,11 @@ const indexController = {
           _id: new ObjectId(id)
         }
       )
-      request.logger.info('ReadDocument successful')
       if (document) {
-        request.logger.info('Document has been read from MongoDB')
         if (document?.file) {
-          // const logicAppUrl =
-          // 'https://devnmswebaf1401.azurewebsites.net:443/api/testworkflow1/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=trstytkwONJ7yjp7Dd4ABqxKQmBdwbRDRX2iYtuHeM0'
           const logicAppUrl =
             'https://devnmswebaf1401.azurewebsites.net:443/api/Workflow3/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=KD1Dg6qXajE-9RGiCDfwM85nW1NyMwATmWI3bfPOpy8'
-          request.logger.info(`Before invoking logicAppUrl `)
-          // return h.response('Successful without Uploading to SP').code(200)
-          const logicAppResponse = await callLogicApp(logicAppUrl)
-          request.logger.info('logicAppResponse >> ' + logicAppResponse)
-          // .header('Content-Type', response.ContentType)
+          await callLogicApp(logicAppUrl)
           return h.response('Logic App invoked !!!').code(200)
         } else {
           return h
